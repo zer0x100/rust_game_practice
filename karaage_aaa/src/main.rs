@@ -16,24 +16,34 @@ enum GameMode {
 
 struct Player {
     x: i32,
+    right: bool,
 }
 
 impl Player {
     fn new(x: i32) -> Self {
-        Self{ x }
+        Self{ x, right: true }
     }
     
     fn render(&self, ctx: &mut BTerm) {
-        ctx.set(
-            self.x,
-            PLAYER_Y, //leaving room for the ground
-            ORANGERED,
+        ctx.set_active_console(1);
+        ctx.cls();
+        let glyph = if self.right { 1 } else { 2 };
+        ctx.set_fancy(
+            PointF::new(self.x as f32, PLAYER_Y as f32),
+            1,
+            Degrees::new(0.0),
+            PointF::new(2.0, 2.0),
+            WHITE,
             BLACK,
-            1
+            glyph,
         );
+        ctx.set_active_console(0);
     }
 
     fn move_right(&mut self, v: i32) {
+        if v > 0 { self. right = true; }
+        else if v < 0 { self.right = false; }
+
         self.x += v;
         if self.x < 0 {
             self.x = 0;     
@@ -80,7 +90,7 @@ impl Karaage {
             self.y as i32,
             WHITE,
             BLACK,
-            179,
+            3,
         )
     }
 }
@@ -255,8 +265,9 @@ fn main() -> BError {
 
     let context = BTermBuilder::new()
         .with_title("Karaage Aaaaaaa")
-        .with_font("../resources/flappy32.png", 32, 32)
-        .with_simple_console(SCREEN_WIDTH, SCREEN_HEIGHT, "../resources/flappy32.png")
+        .with_font("../resources/karaage_font.png", 32, 32)
+        .with_simple_console(SCREEN_WIDTH, SCREEN_HEIGHT, "../resources/karaage_font.png")
+        .with_fancy_console(SCREEN_WIDTH, SCREEN_HEIGHT, "../resources/karaage_font.png")
         .with_tile_dimensions(16, 16)
         .with_dimensions(SCREEN_WIDTH*2, SCREEN_HEIGHT*2)
         .build()?;

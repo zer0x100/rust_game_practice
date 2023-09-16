@@ -22,15 +22,18 @@ impl Map {
         in_bounds(position) && self.tiles[map_idx(position.x, position.y)] == TileType::Floor
     }
 
-    pub fn render(&self, ctx: &mut BTerm) {
-        for y in 0..SCREEN_HEIGHT {
-            for x in 0..SCREEN_WIDTH {
-                match self.tiles[map_idx(x, y)] {
-                    TileType::Floor => {
-                        ctx.set(x, y, WHITE, BLACK, to_cp437('.'));
-                    }
-                    TileType::Wall => {
-                        ctx.set(x, y, GREEN, BLACK, to_cp437('#'));
+    pub fn render(&self, ctx: &mut BTerm, camera: &Camera) {
+        ctx.set_active_console(0);
+        for y in camera.top_y..=camera.bottom_y {
+            for x in camera.left_x..=camera.right_x {
+                if in_bounds(Point::new(x, y)) {
+                    match self.tiles[map_idx(x, y)] {
+                        TileType::Floor => {
+                            ctx.set(x - camera.left_x, y - camera.top_y, WHITE, BLACK, to_cp437('.'));
+                        }
+                        TileType::Wall => {
+                            ctx.set(x - camera.left_x, y - camera.top_y, WHITE, BLACK, to_cp437('#'));
+                        }
                     }
                 }
             }

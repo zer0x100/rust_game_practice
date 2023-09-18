@@ -1,4 +1,5 @@
 pub use crate::prelude::*;
+use std::{collections::HashSet, hash::Hash};
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Render {
@@ -36,3 +37,37 @@ pub struct Health {
 
 #[derive(Clone, PartialEq)]
 pub struct Name(pub String);
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ChasingPlayer;
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Item;
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct AmuletOfYala;
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct FieldOfVeiw {
+    pub visible_tiles: HashSet<Point>,
+    pub radius: i32,
+    pub is_dirty: bool,
+}
+
+impl FieldOfVeiw {
+    pub fn new(radius: i32) -> Self {
+        Self {
+            visible_tiles: HashSet::new(),
+            radius,
+            is_dirty: true
+        }
+    }
+
+    pub fn clone_dirty(&self) -> Self {
+        Self {
+            visible_tiles: HashSet::new(),
+            radius: self.radius,
+            is_dirty: true,
+        }
+    }
+}

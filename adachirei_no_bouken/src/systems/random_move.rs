@@ -22,7 +22,9 @@ pub fn random_move(ecs: &SubWorld, commands: &mut CommandBuffer) {
             .iter(ecs)
             .filter(|(_, target_pos, _)| **target_pos == destination)
             .for_each(|(victim, _, _)| {
-                if ecs.entry_ref(*victim).unwrap().get_component::<Player>().is_ok() {
+                if ecs.entry_ref(*victim)
+                .unwrap().get_component::<Player>().is_ok()
+                {
                     commands
                         .push(((), WantsToAttack{
                             attacker: *entity,

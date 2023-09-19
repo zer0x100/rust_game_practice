@@ -22,6 +22,7 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
     ));
 }
 
+//Levelに合わせてモンスターとアイテムをランダム発生
 pub fn spawn_level(
     ecs: &mut World,
     rng: &mut RandomNumberGenerator,
@@ -32,6 +33,7 @@ pub fn spawn_level(
     templates.spawn_entities(ecs, rng, level, spawn_points);
 }
 
+//ランダム発生以外の、固有敵・武器などSpecialTagが付けられたものを発生させる。
 pub fn spawn_special_tagged(ecs: &mut World, pos: Point, tag: template::SpecialTag) {
     let templates = Templates::load();
     let boss_template = templates.entities

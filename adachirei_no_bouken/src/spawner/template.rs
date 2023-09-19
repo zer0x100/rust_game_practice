@@ -25,10 +25,11 @@ pub enum EntityType {
     Item,
 }
 
+//固有の敵やアイテムに付けるラベル
 #[derive(Clone, Deserialize, Debug, PartialEq)]
 pub enum SpecialTag {
     Boss,
-    Only1Weapon,
+    UniqueWeapon,
 }
 
 #[derive(Clone, Deserialize, Debug)]

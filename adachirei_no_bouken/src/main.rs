@@ -185,6 +185,7 @@ impl State {
         //add other entities
         if map_level == 2 {
             spawn_special_tagged(&mut self.ecs, map_builder.amulet_start, SpecialTag::Boss);
+            spawn_special_tagged(&mut self.ecs, map_builder.monster_spawns[0], SpecialTag::UniqueWeapon);
         } else {
             let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
             map_builder.map.tiles[exit_idx] = TileType::Exit;

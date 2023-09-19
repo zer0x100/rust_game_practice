@@ -5,6 +5,7 @@ use crate::prelude::*;
 #[read_component(Player)]
 #[read_component(Enemy)]
 #[read_component(Carried)]
+#[read_component(Item)]
 pub fn player_input(
     ecs: &SubWorld,
     commands: &mut CommandBuffer,
@@ -13,11 +14,31 @@ pub fn player_input(
 ) {
     let mut players = <(Entity, &Point)>::query().filter(component::<Player>());
     if let Some(key) = *key {
+        let mut new_turn = TurnState::PlayerTurn;
+
         let delta = match key {
             VirtualKeyCode::Left => Point::new(-1, 0),
             VirtualKeyCode::Right => Point::new(1, 0),
             VirtualKeyCode::Up => Point::new(0, -1),
             VirtualKeyCode::Down => Point::new(0, 1),
+            VirtualKeyCode::G => {
+                let (player_entity, player_pos) = players
+                    .iter(ecs)
+                    .find_map(|(entity, pos)| Some((*entity, *pos)))
+                    .unwrap();
+                let mut items = <(Entity, &Point)>::query().filter(component::<Item>());
+                items.iter(ecs)
+                    .filter(|(_, pos)| **pos == player_pos)
+                    .for_each(|(item_entity, _)| {
+                        commands.remove_component::<Point>(*item_entity);
+                        commands.add_component(*item_entity, Carried(player_entity));
+                    }
+                );
+                //grabing items doesn't skip player's turn.
+                new_turn = TurnState::AwaitingInput;
+
+                Point::zero()
+            }
             VirtualKeyCode::Key1 => use_item(0, ecs, commands),
             VirtualKeyCode::Key2 => use_item(1, ecs, commands),
             VirtualKeyCode::Key3 => use_item(2, ecs, commands),
@@ -63,7 +84,7 @@ pub fn player_input(
                 ));
             }
         }
-        *turn_state = TurnState::PlayerTurn;
+        *turn_state = new_turn;
     }
 }
 

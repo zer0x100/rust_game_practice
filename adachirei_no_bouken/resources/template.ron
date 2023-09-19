@@ -23,19 +23,19 @@ Templates(
         ),
         Template(
             entity_type: Item,
-            name: "Sturdy Globe", glyph: '/', levels : [ 0 ],
+            name: "Sturdy Arm", glyph: '/', levels : [ 0 ],
             frequency : 1,
             base_damage: Some(1)
         ),
         Template(
             entity_type: Item,
-            name : "Combat Globe", glyph: 'S', levels: [ 1 ],
+            name : "Combat Arm", glyph: 'S', levels: [ 1 ],
             frequency: 1,
             base_damage: Some(2)
         ),
         Template(
             entity_type: Item,
-            name : "Hot Globe", glyph: '/', levels: [ 2 ],
+            name : "Lightning Arm", glyph: '/', levels: [ 2 ],
             frequency: 1,
             base_damage: Some(3),
         ),
@@ -90,10 +90,10 @@ Templates(
         //Speciall weapon
         Template(
             entity_type: Item,
-            name : "Incandescent Globe", glyph: '^', levels: [ ],
+            name : "Jet Engine Arm", glyph: '^', levels: [ ],
             frequency: 0,
             base_damage: Some(7),
-            special_tag: Some(Only1Weapon),
+            special_tag: Some(UniqueWeapon),
         ),
     ],
 )

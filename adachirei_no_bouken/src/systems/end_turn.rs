@@ -8,8 +8,7 @@ use crate::prelude::*;
 pub fn end_turn(ecs: &SubWorld, #[resource] turn_state: &mut TurnState, #[resource] map: &Map) {
     let mut players = <(Entity, &Health, &Point)>::query().filter(component::<Player>());
     let mut amulet = <&Carried>::query().filter(component::<AmuletOfYala>());
-    let amulet_carrier = amulet.iter(ecs)
-        .find_map(|carried| Some(carried.0));
+    let amulet_carrier = amulet.iter(ecs).find_map(|carried| Some(carried.0));
 
     let currnet_state = turn_state.clone();
     let mut new_state = match turn_state {

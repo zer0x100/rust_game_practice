@@ -1,6 +1,7 @@
 use crate::prelude::*;
 
-const FORTRESS: (&str, i32, i32) = ("
+const FORTRESS: (&str, i32, i32) = (
+    "
 ------------
 ---######---
 ---#----#---
@@ -12,7 +13,10 @@ const FORTRESS: (&str, i32, i32) = ("
 ---#----#---
 ---######---
 ------------
-", 12, 11);//(prefab, width, height)
+",
+    12,
+    11,
+); //(prefab, width, height)
 
 pub fn apply_prefab(mb: &mut MapBuilder, rng: &mut RandomNumberGenerator) {
     let mut placement = None;
@@ -21,7 +25,7 @@ pub fn apply_prefab(mb: &mut MapBuilder, rng: &mut RandomNumberGenerator) {
         SCREEN_HEIGHT,
         &vec![mb.map.point2d_to_index(mb.player_start)],
         &mb.map,
-        1024.0
+        1024.0,
     );
 
     //search for where to set the prefab
@@ -32,7 +36,7 @@ pub fn apply_prefab(mb: &mut MapBuilder, rng: &mut RandomNumberGenerator) {
             rng.range(0, SCREEN_WIDTH - FORTRESS.1),
             rng.range(0, SCREEN_HEIGHT - FORTRESS.2),
             FORTRESS.1,
-            FORTRESS.2
+            FORTRESS.2,
         );
         let mut can_place = false;
         dimensions.for_each(|pt| {
@@ -51,8 +55,10 @@ pub fn apply_prefab(mb: &mut MapBuilder, rng: &mut RandomNumberGenerator) {
     }
 
     if let Some(placement) = placement {
-        let string_vec: Vec<char> = FORTRESS.0
-            .chars().filter(|a| *a != '\r' && *a != '\n')
+        let string_vec: Vec<char> = FORTRESS
+            .0
+            .chars()
+            .filter(|a| *a != '\r' && *a != '\n')
             .collect();
         let mut i = 0;
         for ty in placement.y..placement.y + FORTRESS.2 {
@@ -66,7 +72,7 @@ pub fn apply_prefab(mb: &mut MapBuilder, rng: &mut RandomNumberGenerator) {
                     }
                     '-' => mb.map.tiles[idx] = TileType::Floor,
                     '#' => mb.map.tiles[idx] = TileType::Wall,
-                    _ => println!("No idea what to do with [{}]", c)
+                    _ => println!("No idea what to do with [{}]", c),
                 }
                 i += 1;
             }

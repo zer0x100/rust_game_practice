@@ -5,6 +5,8 @@ use crate::prelude::*;
 #[read_component(FieldOfVeiw)]
 #[read_component(Point)]
 #[read_component(Item)]
+#[read_component(Weapon)]
+#[read_component(Carried)]
 pub fn movement(
     entity: &Entity,
     want_move: &WantsToMove,
@@ -28,14 +30,27 @@ pub fn movement(
                         map.revealed_tiles[map_idx(pos.x, pos.y)] = true;
                     });
 
+                    //pick up items
                     let mut items = <(Entity, &Point)>::query().filter(component::<Item>());
-                    items.iter(ecs)
+                    items
+                        .iter(ecs)
                         .filter(|(_, pos)| **pos == want_move.destination)
                         .for_each(|(item_entity, _)| {
                             commands.add_component(*item_entity, Carried(want_move.entity));
                             commands.remove_component::<Point>(*item_entity);
-                        }
-                    );
+
+                            //Weaponは一つまで
+                            if let Ok(e) = ecs.entry_ref(*item_entity) {
+                                if e.get_component::<Weapon>().is_ok() {
+                                    <(Entity, &Carried, &Weapon)>::query()
+                                        .iter(ecs)
+                                        .filter(|(_, c, _)| c.0 == want_move.entity)
+                                        .for_each(|(e, _, _)| {
+                                            commands.remove(*e);
+                                        })
+                                }
+                            }
+                        });
                 }
             }
         }

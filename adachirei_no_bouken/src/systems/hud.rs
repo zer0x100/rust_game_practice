@@ -41,9 +41,9 @@ pub fn hud(ecs: &SubWorld) {
         .nth(0)
         .unwrap();
     draw_batch.print_color_right(
-        Point::new(SCREEN_WIDTH*2, 1),
+        Point::new(SCREEN_WIDTH * 2, 1),
         format!("Dungeon Level: {}", map_level),
-        ColorPair::new(YELLOW, BLACK)
+        ColorPair::new(YELLOW, BLACK),
     );
     let mut item_query = <(&Name, &Carried)>::query().filter(component::<Item>());
     let mut y = 3;
@@ -51,16 +51,14 @@ pub fn hud(ecs: &SubWorld) {
         .iter(ecs)
         .filter(|(_, carried)| carried.0 == *player)
         .for_each(|(name, _)| {
-            draw_batch.print(
-                Point::new(3, y),
-                format!("{} : {}", y-2, &name.0)
-            );
+            draw_batch.print(Point::new(3, y), format!("{} : {}", y - 2, &name.0));
             y += 1;
-        }
-    );
+        });
     if y > 3 {
-        draw_batch.print_color(Point::new(3, 2), "Items carried",
-            ColorPair::new(YELLOW, BLACK)
+        draw_batch.print_color(
+            Point::new(3, 2),
+            "Items carried",
+            ColorPair::new(YELLOW, BLACK),
         );
     }
 

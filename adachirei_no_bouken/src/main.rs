@@ -44,12 +44,9 @@ impl State {
         let mut map_builder = MapBuilder::new(&mut rng);
         //spawn entities
         spawn_player(&mut ecs, map_builder.player_start);
-        //spawn_amulet_of_yala(&mut ecs, map_builder.amulet_start);
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
         map_builder.map.tiles[exit_idx] = TileType::Exit;
-        map_builder.monster_spawns.iter().for_each(|pos| {
-            spawn_entity_random(&mut ecs, &mut rng, *pos);
-        });
+        spawn_level(&mut ecs, &mut rng, 0, &map_builder.monster_spawns);
 
         //add resources
         resources.insert(map_builder.map);
@@ -73,9 +70,7 @@ impl State {
         let map_builder = MapBuilder::new(&mut rng);
         spawn_player(&mut self.ecs, map_builder.player_start);
         spawn_amulet_of_yala(&mut self.ecs, map_builder.amulet_start);
-        map_builder.monster_spawns.iter().for_each(|pos| {
-            spawn_entity_random(&mut self.ecs, &mut rng, *pos);
-        });
+        spawn_level(&mut self.ecs, &mut rng, 0, &map_builder.monster_spawns);
         self.resources.insert(map_builder.map);
         self.resources.insert(Camera::new(map_builder.player_start));
         self.resources.insert(TurnState::AwaitingInput);
@@ -153,7 +148,9 @@ impl State {
         <(Entity, &Carried)>::query()
             .iter(&self.ecs)
             .filter(|(_, carried)| carried.0 == player_entity)
-            .for_each(|(e, _)| { entities_to_keep.insert(*e); });
+            .for_each(|(e, _)| {
+                entities_to_keep.insert(*e);
+            });
 
         //Remove the other entities
         let mut cb = CommandBuffer::new(&mut self.ecs);
@@ -182,19 +179,21 @@ impl State {
                 player.map_level += 1;
                 map_level = player.map_level;
                 *pos = map_builder.player_start;
-            }
-        );
+            });
 
         //add other entities
-        if map_level == 2{
+        if map_level == 2 {
             spawn_amulet_of_yala(&mut self.ecs, map_builder.amulet_start);
         } else {
             let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
             map_builder.map.tiles[exit_idx] = TileType::Exit;
         }
-        map_builder.monster_spawns
-            .iter()
-            .for_each(|pos| spawn_entity_random(&mut self.ecs, &mut rng, *pos));
+        spawn_level(
+            &mut self.ecs,
+            &mut rng,
+            map_level as usize,
+            &map_builder.monster_spawns,
+        );
 
         //add resources
         self.resources.insert(map_builder.map);

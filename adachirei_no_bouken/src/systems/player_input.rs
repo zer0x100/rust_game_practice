@@ -27,7 +27,6 @@ pub fn player_input(
             VirtualKeyCode::Key7 => use_item(6, ecs, commands),
             VirtualKeyCode::Key8 => use_item(7, ecs, commands),
             VirtualKeyCode::Key9 => use_item(8, ecs, commands),
-            
             _ => Point::new(0, 0),
         };
 
@@ -68,14 +67,15 @@ pub fn player_input(
     }
 }
 
-fn use_item(n: usize, ecs: &SubWorld, commands: &mut CommandBuffer)
--> Point {
-    let player_entity = <Entity>::query().filter(component::<Player>())
+fn use_item(n: usize, ecs: &SubWorld, commands: &mut CommandBuffer) -> Point {
+    let player_entity = <Entity>::query()
+        .filter(component::<Player>())
         .iter(ecs)
         .find_map(|entity| Some(*entity))
         .unwrap();
 
-    let item_entity = <(Entity, &Carried)>::query().filter(component::<Item>())
+    let item_entity = <(Entity, &Carried)>::query()
+        .filter(component::<Item>())
         .iter(ecs)
         .filter(|(_, carried)| carried.0 == player_entity)
         .enumerate()
@@ -83,11 +83,12 @@ fn use_item(n: usize, ecs: &SubWorld, commands: &mut CommandBuffer)
         .find_map(|(_, (item_entity, _))| Some(*item_entity));
 
     if let Some(item_entity) = item_entity {
-        commands.push(((),
+        commands.push((
+            (),
             ActiveItem {
                 used_by: player_entity,
-                item: item_entity
-            }
+                item: item_entity,
+            },
         ));
     }
 

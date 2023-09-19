@@ -4,10 +4,12 @@ use crate::prelude::*;
 #[read_component(Player)]
 #[read_component(Health)]
 #[read_component(Point)]
-pub fn end_turn(ecs: &SubWorld, #[resource] turn_state: &mut TurnState) {
-    let mut players = <(&Health, &Point)>::query().filter(component::<Player>());
-    let mut amulet = <&Point>::query().filter(component::<AmuletOfYala>());
-    let amulet_pos = amulet.iter(ecs).nth(0).unwrap();
+#[read_component(Carried)]
+pub fn end_turn(ecs: &SubWorld, #[resource] turn_state: &mut TurnState, #[resource] map: &Map) {
+    let mut players = <(Entity, &Health, &Point)>::query().filter(component::<Player>());
+    let mut amulet = <&Carried>::query().filter(component::<AmuletOfYala>());
+    let amulet_carrier = amulet.iter(ecs)
+        .find_map(|carried| Some(carried.0));
 
     let currnet_state = turn_state.clone();
     let mut new_state = match turn_state {
@@ -17,13 +19,19 @@ pub fn end_turn(ecs: &SubWorld, #[resource] turn_state: &mut TurnState) {
         _ => currnet_state,
     };
 
-    //check game over
-    players.iter(ecs).for_each(|(health, pos)| {
+    //check game over and victory, next-level
+    players.iter(ecs).for_each(|(player_entity, health, pos)| {
         if health.current < 1 {
             new_state = TurnState::GameOver;
         }
-        if *pos == *amulet_pos {
-            new_state = TurnState::Victory;
+        let idx = map.point2d_to_index(*pos);
+        if map.tiles[idx] == TileType::Exit {
+            new_state = TurnState::NextLevel;
+        }
+        if let Some(amulet_carrier) = amulet_carrier {
+            if amulet_carrier == *player_entity {
+                new_state = TurnState::Victory;
+            }
         }
     });
 

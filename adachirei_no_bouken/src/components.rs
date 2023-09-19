@@ -1,14 +1,16 @@
 pub use crate::prelude::*;
-use std::{collections::HashSet, hash::Hash};
+use std::collections::HashSet;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Render {
-    pub color : ColorPair,
-    pub glyph : FontCharType
+    pub color: ColorPair,
+    pub glyph: FontCharType,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub struct Player;
+pub struct Player {
+    pub map_level: u32
+}
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Enemy;
@@ -16,23 +18,22 @@ pub struct Enemy;
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct MovingRandomly;
 
-
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct WantsToMove {
-    pub entity : Entity,
-    pub destination : Point
+    pub entity: Entity,
+    pub destination: Point,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct WantsToAttack {
-    pub attacker : Entity,
-    pub victim : Entity
+    pub attacker: Entity,
+    pub victim: Entity,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Health {
     pub current: i32,
-    pub max: i32
+    pub max: i32,
 }
 
 #[derive(Clone, PartialEq)]
@@ -59,7 +60,7 @@ impl FieldOfVeiw {
         Self {
             visible_tiles: HashSet::new(),
             radius,
-            is_dirty: true
+            is_dirty: true,
         }
     }
 
@@ -70,4 +71,22 @@ impl FieldOfVeiw {
             is_dirty: true,
         }
     }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ProvidesHealing {
+    pub amount: i32,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ProvidesDungeonMap;
+
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Carried(pub Entity);
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ActiveItem {
+    pub used_by: Entity,
+    pub item: Entity,
 }

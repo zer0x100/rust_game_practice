@@ -15,12 +15,20 @@ pub struct Template {
     pub provides: Option<Vec<(String, i32)>>,
     pub hp: Option<i32>,
     pub base_damage: Option<i32>,
+    pub special_tag: Option<SpecialTag>,
+    pub field_of_view_radius: Option<i32>,
 }
 
 #[derive(Clone, Deserialize, Debug, PartialEq)]
 pub enum EntityType {
     Enemy,
     Item,
+}
+
+#[derive(Clone, Deserialize, Debug, PartialEq)]
+pub enum SpecialTag {
+    Boss,
+    Only1Weapon,
 }
 
 #[derive(Clone, Deserialize, Debug)]
@@ -79,15 +87,14 @@ impl Templates {
             EntityType::Enemy => {
                 commands.add_component(entity, Enemy);
                 commands.add_component(entity, ChasingPlayer {});
-                commands.add_component(entity, FieldOfVeiw::new(6));
-                commands.add_component(
-                    entity,
-                    Health {
-                        max: template.hp.unwrap(),
-                        current: template.hp.unwrap(),
-                    },
-                );
             }
+        }
+
+        if let Some(health) = &template.hp {
+            commands.add_component(entity, Health {max: *health, current: *health});
+        }
+        if let Some(radius) = &template.field_of_view_radius {
+            commands.add_component(entity, FieldOfVeiw::new(*radius));
         }
         if let Some(effects) = &template.provides {
             effects
@@ -98,13 +105,19 @@ impl Templates {
                     _ => {
                         println!("Warning: we don't know how to provide {}", provides);
                     }
-                })
+                }
+            );
         }
         if let Some(damage) = &template.base_damage {
             commands.add_component(entity, Damage(*damage));
             if template.entity_type == EntityType::Item {
                 commands.add_component(entity, Weapon {});
             }
+        }
+
+        //check special tag
+        if template.special_tag == Some(SpecialTag::Boss) {
+            commands.add_component(entity, Boss);
         }
     }
 }

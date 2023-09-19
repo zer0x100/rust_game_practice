@@ -2,6 +2,8 @@ mod template;
 
 use crate::prelude::*;
 use template::Templates;
+//available from outside
+pub use template::SpecialTag;
 
 pub fn spawn_player(ecs: &mut World, pos: Point) {
     ecs.push((
@@ -20,25 +22,27 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
     ));
 }
 
-pub fn spawn_amulet_of_yala(ecs: &mut World, pos: Point) {
-    ecs.push((
-        Item,
-        AmuletOfYala,
-        pos,
-        Render {
-            color: ColorPair::new(WHITE, BLACK),
-            glyph: to_cp437('|'),
-        },
-        Name("Amulet of Yala".to_string()),
-    ));
-}
-
 pub fn spawn_level(
     ecs: &mut World,
     rng: &mut RandomNumberGenerator,
     level: usize,
     spawn_points: &[Point],
 ) {
-    let template = Templates::load();
-    template.spawn_entities(ecs, rng, level, spawn_points);
+    let templates = Templates::load();
+    templates.spawn_entities(ecs, rng, level, spawn_points);
 }
+
+pub fn spawn_special_tagged(ecs: &mut World, pos: Point, tag: template::SpecialTag) {
+    let templates = Templates::load();
+    let boss_template = templates.entities
+        .iter()
+        .filter(|template| 
+            template.special_tag == Some(tag.clone())
+        )
+        .nth(0)
+        .expect("Templates::load Error, No Boss exists");
+    let mut commands = CommandBuffer::new(ecs);
+    templates.spawn_entity(&pos, boss_template, &mut commands);
+    commands.flush(ecs);
+}
+

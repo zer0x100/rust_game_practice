@@ -18,6 +18,7 @@ pub struct Template {
     pub base_defense: Option<i32>,
     pub special_tag: Option<SpecialTag>,
     pub field_of_view_radius: Option<i32>,
+    pub heat_seeking: bool,
 }
 
 #[derive(Clone, Deserialize, Debug, PartialEq)]
@@ -127,6 +128,9 @@ impl Templates {
             if template.entity_type == EntityType::Item {
                 commands.add_component(entity, Armor);
             }
+        }
+        if template.heat_seeking {
+            commands.add_component(entity, HeatSeeking{ saw_player: false });
         }
 
         //check special tag

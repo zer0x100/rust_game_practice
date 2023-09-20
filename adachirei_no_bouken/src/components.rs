@@ -103,3 +103,8 @@ pub struct Defense(pub i32);
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Armor;
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct HeatSeeking {
+    pub saw_player: bool,
+}

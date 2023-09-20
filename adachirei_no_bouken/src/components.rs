@@ -82,6 +82,11 @@ pub struct ProvidesHealing {
 pub struct ProvidesDungeonMap;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ProvidesWiderView {
+    pub amount: i32,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Carried(pub Entity);
 
 #[derive(Clone, Copy, Debug, PartialEq)]

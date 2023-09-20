@@ -31,6 +31,8 @@ pub enum EntityType {
 pub enum SpecialTag {
     Boss,
     UniqueWeapon,
+    UniqueArmor,
+    UniqueEye,
 }
 
 #[derive(Clone, Deserialize, Debug)]
@@ -104,6 +106,7 @@ impl Templates {
                 .for_each(|(provides, n)| match provides.as_str() {
                     "Healing" => commands.add_component(entity, ProvidesHealing { amount: *n }),
                     "MagicMap" => commands.add_component(entity, ProvidesDungeonMap {}),
+                    "MagicEye" => commands.add_component(entity, ProvidesWiderView{ amount: *n }),
                     _ => {
                         println!("Warning: we don't know how to provide {}", provides);
                     }

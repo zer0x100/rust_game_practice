@@ -14,10 +14,10 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
             glyph: to_cp437('@'),
         },
         Health {
-            current: 10,
-            max: 10,
+            current: 15,
+            max: 15,
         },
-        FieldOfVeiw::new(8),
+        FieldOfVeiw::new(6),
         Damage(1),
         Defense(0),
     ));

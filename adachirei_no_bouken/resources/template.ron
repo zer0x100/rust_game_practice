@@ -41,7 +41,7 @@ Templates(
         ),
         Template(
             entity_type: Item,
-            name : "Reinforced Fibers Hoodie", glyph: '<', levels: [ 1, 2 ],
+            name : "Hoodie", glyph: '<', levels: [ 1, 2 ],
             frequency: 1,
             base_defense: Some(1),
         ),
@@ -98,6 +98,14 @@ Templates(
             special_tag: Some(Boss),
             field_of_view_radius: Some(10),
         ),
+        //Speciall eye
+        Template(
+            entity_type: Item,
+            name : "High Performance Eye Parts", glyph: '&', levels: [ ],
+            frequency: 0,
+            provides: Some([ ("MagicEye", 3) ]),
+            special_tag: Some(UniqueEye),
+        ),
         //Speciall weapon
         Template(
             entity_type: Item,
@@ -105,6 +113,14 @@ Templates(
             frequency: 0,
             base_damage: Some(7),
             special_tag: Some(UniqueWeapon),
+        ),
+        //Speciall armor
+        Template(
+            entity_type: Item,
+            name : "Reinforced Fibers Hoodie", glyph: '%', levels: [ ],
+            frequency: 0,
+            base_defense: Some(3),
+            special_tag: Some(UniqueArmor),
         ),
     ],
 )

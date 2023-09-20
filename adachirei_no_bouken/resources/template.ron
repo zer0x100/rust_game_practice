@@ -39,6 +39,12 @@ Templates(
             frequency: 1,
             base_damage: Some(3),
         ),
+        Template(
+            entity_type: Item,
+            name : "Reinforced Fibers Hoodie", glyph: '<', levels: [ 0, 1, 2 ],
+            frequency: 3,
+            base_defense: Some(1),
+        ),
 
         //Enemies
         Template(
@@ -48,30 +54,34 @@ Templates(
             frequency: 3,
             base_damage: Some(1),
             field_of_view_radius: Some(6),
+            base_defense: Some(0),
         ),
         Template(
             entity_type: Enemy,
             name : "Combat Robot A", glyph : 'o', levels : [ 0, 1, 2 ],
-            hp : Some(2),
+            hp : Some(3),
             frequency: 2,
-            base_damage: Some(1),
+            base_damage: Some(2),
             field_of_view_radius: Some(6),
+            base_defense: Some(0),
         ),
         Template(
             entity_type: Enemy,
             name : "Combat Robot B", glyph: 'O', levels : [ 1, 2 ],
-            hp : Some(5),
+            hp : Some(6),
             frequency : 1,
-            base_damage : Some(2),
+            base_damage : Some(3),
             field_of_view_radius: Some(7),
+            base_defense: Some(1),
         ),
         Template(
             entity_type: Enemy,
             name : "Combat Robot C", glyph : 'E', levels : [ 2 ],
-            hp : Some(10),
+            hp : Some(12),
             frequency : 1,
-            base_damage: Some(3),
+            base_damage: Some(4),
             field_of_view_radius: Some(8),
+            base_defense: Some(1),
         ),
 
         //with special tag
@@ -84,6 +94,7 @@ Templates(
             hp : Some(20),
             frequency : 0,
             base_damage: Some(5),
+            base_defense: Some(2),
             special_tag: Some(Boss),
             field_of_view_radius: Some(10),
         ),

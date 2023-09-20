@@ -6,6 +6,7 @@ use crate::prelude::*;
 #[write_component(Health)]
 #[read_component(Carried)]
 #[read_component(Damage)]
+#[read_component(Defense)]
 pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer) {
     let mut attackers = <(Entity, &WantsToAttack)>::query();
 
@@ -35,7 +36,21 @@ pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer) {
             .filter(|(carried, _)| carried.0 == *attacker)
             .map(|(_, dmg)| dmg.0)
             .sum();
-        let final_damage = base_damage + weapon_damage;
+        let base_defense = if let Ok(v) = ecs.entry_ref(*victim) {
+            if let Ok(defense) = v.get_component::<Defense>() {
+                defense.0
+            } else {
+                0
+            }
+        } else {
+            0
+        };
+        let armor_defense: i32 = <(&Carried, &Defense)>::query()
+            .iter(ecs)
+            .filter(|(carried, _)| carried.0 == *victim)
+            .map(|(_, defense)| defense.0)
+            .sum();
+        let final_damage = std::cmp::max(0, base_damage + weapon_damage - (base_defense + armor_defense));
 
         if let Ok(mut health) = ecs
             .entry_mut(*victim)

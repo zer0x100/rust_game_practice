@@ -4,7 +4,6 @@ use crate::prelude::*;
 #[read_component(ActiveItem)]
 #[read_component(ProvidesHealing)]
 #[read_component(ProvidesWiderView)]
-#[read_component(ProvidesDungeonMap)]
 #[write_component(Health)]
 #[write_component(FieldOfVeiw)]
 pub fn use_items(ecs: &mut SubWorld, #[resource] map: &mut Map, commands: &mut CommandBuffer) {
@@ -18,9 +17,6 @@ pub fn use_items(ecs: &mut SubWorld, #[resource] map: &mut Map, commands: &mut C
             if let Ok(item) = item {
                 if let Ok(healing) = item.get_component::<ProvidesHealing>() {
                     healing_to_apply.push((activate.used_by, healing.amount));
-                }
-                if let Ok(_mapper) = item.get_component::<ProvidesDungeonMap>() {
-                    map.revealed_tiles.iter_mut().for_each(|t| *t = true);
                 }
                 if let Ok(wider_view) = item.get_component::<ProvidesWiderView>() {
                     wider_view_to_apply.push((activate.used_by, wider_view.amount));

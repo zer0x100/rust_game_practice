@@ -17,12 +17,6 @@ Templates(
         ),
         Template(
             entity_type: Item,
-            name : "Map", glyph : '{', levels : [ 0, 1, 2 ],
-            provides: Some([ ("MagicMap", 0) ]),
-            frequency: 1
-        ),
-        Template(
-            entity_type: Item,
             name: "Sturdy Arm", glyph: '/', levels : [ 0 ],
             frequency : 1,
             base_damage: Some(1)

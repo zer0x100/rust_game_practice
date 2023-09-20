@@ -53,7 +53,7 @@ impl State {
         //add resources
         resources.insert(map_builder.map);
         resources.insert(Camera::new(map_builder.player_start));
-        resources.insert(TurnState::AwaitingInput);
+        resources.insert(TurnState::MainMenue);
         resources.insert(map_builder.theme);
 
         Self {
@@ -62,6 +62,26 @@ impl State {
             input_systems: build_input_scheduler(),
             player_systems: build_player_scheduler(),
             monster_systems: build_monster_scheduler(),
+        }
+    }
+
+    fn main_menue(&mut self, ctx: &mut BTerm) {
+        ctx.set_active_console(3);
+        ctx.print_centered(1, "Story");
+
+
+        ctx.print_color_centered(3, PURPLE, BLACK, "write Story");
+
+        //TODO: write Story
+
+        ctx.print_color_centered(DISPLAY_HEIGHT, YELLOW, BLACK, "Display an illust");
+
+        //TODO: Display an illust
+
+        ctx.print_centered(DISPLAY_HEIGHT * 2, "(P) Play Game");
+
+        if Some(VirtualKeyCode::P) == ctx.key {
+            self.reset_game();
         }
     }
 
@@ -89,47 +109,40 @@ impl State {
             4,
             WHITE,
             BLACK,
-            "Slain by a monster, your hero's journey has come to a premature end.",
+            "Slain by a robot, Adachi's journey has come to a premature end.",
         );
-        ctx.print_color_centered(
-            5,
-            WHITE,
-            BLACK,
-            "The Amulet of Yala remains unclaimed, and your home town is not saved.",
-        );
-        ctx.print_color_centered(
-            8,
-            YELLOW,
-            BLACK,
-            "Don't worry, you can always try again with a new hero.",
-        );
-        ctx.print_color_centered(9, GREEN, BLACK, "Press 1 to play again.");
 
-        if let Some(VirtualKeyCode::Key1) = ctx.key {
-            self.reset_game();
+        ctx.print_color_centered(3, PURPLE, BLACK, "write Story");
+
+        //TODO: write Story
+
+        ctx.print_color_centered(DISPLAY_HEIGHT, YELLOW, BLACK, "Display an illust");
+
+        //TODO: Display an illust
+
+        ctx.print_color_centered(9, GREEN, BLACK, "(M) Go Back Main Menue");
+
+        if let Some(VirtualKeyCode::M) = ctx.key {
+            self.resources.insert(TurnState::MainMenue);
         }
     }
 
     fn victory(&mut self, ctx: &mut BTerm) {
         ctx.set_active_console(3);
         ctx.print_color_centered(2, GREEN, BLACK, "You have won!");
-        ctx.print_color_centered(
-            4,
-            WHITE,
-            BLACK,
-            "You put on the Amulet of Yala and feel its power course through \
-        your veins.",
-        );
-        ctx.print_color_centered(
-            5,
-            WHITE,
-            BLACK,
-            "Your town is saved, and you can return to your normal life.",
-        );
-        ctx.print_color_centered(7, GREEN, BLACK, "Press 1 to play again.");
 
-        if let Some(VirtualKeyCode::Key1) = ctx.key {
-            self.reset_game();
+        ctx.print_color_centered(3, PURPLE, BLACK, "write Story");
+
+        //TODO: write Story
+
+        ctx.print_color_centered(DISPLAY_HEIGHT, YELLOW, BLACK, "Display an illust");
+
+        //TODO: Display an illust
+
+        ctx.print_color_centered(7, GREEN, BLACK, "(M) Go Back Main Menue");
+
+        if let Some(VirtualKeyCode::M) = ctx.key {
+            self.resources.insert(TurnState::MainMenue);
         }
     }
 
@@ -263,6 +276,7 @@ impl GameState for State {
             TurnState::MonsterTurn => self
                 .monster_systems
                 .execute(&mut self.ecs, &mut self.resources),
+            TurnState::MainMenue => self.main_menue(ctx),
             TurnState::GameOver => self.gameover(ctx),
             TurnState::Victory => self.victory(ctx),
             TurnState::NextLevel => self.advance_level(),

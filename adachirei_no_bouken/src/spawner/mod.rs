@@ -7,6 +7,7 @@ pub use template::SpecialTag;
 
 pub fn spawn_player(ecs: &mut World, pos: Point) {
     ecs.push((
+        Name("Adachi Rei".to_string()),
         Player { map_level: 0 },
         pos,
         Render {

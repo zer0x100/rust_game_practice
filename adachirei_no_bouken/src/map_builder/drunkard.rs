@@ -14,7 +14,7 @@ impl MapArchitect for DrunkardArchitect {
             monster_spawns: Vec::new(),
             player_start: Point::zero(),
             amulet_start: Point::zero(),
-            theme: super::themes::DungeonTheme::new(),
+            theme: super::themes::ResearchInstitueTheme::new(),
         };
 
         mb.fill(TileType::Wall);

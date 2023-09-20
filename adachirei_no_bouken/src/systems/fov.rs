@@ -10,6 +10,5 @@ pub fn fov(ecs: &mut SubWorld, #[resource] map: &Map) {
         .for_each(|(fov, pos)| {
             fov.visible_tiles = field_of_view_set(*pos, fov.radius, map);
             fov.is_dirty = false;
-        }
-    );
+        });
 }

@@ -23,39 +23,49 @@ pub fn player_input(
             VirtualKeyCode::Right => Point::new(1, 0),
             VirtualKeyCode::Up => Point::new(0, -1),
             VirtualKeyCode::Down => Point::new(0, 1),
-            VirtualKeyCode::G => {
+            VirtualKeyCode::P => {
                 let (player_entity, player_pos) = players
                     .iter(ecs)
                     .find_map(|(entity, pos)| Some((*entity, *pos)))
                     .unwrap();
                 let mut items = <(Entity, &Point)>::query().filter(component::<Item>());
-                items.iter(ecs)
+                items
+                    .iter(ecs)
                     .filter(|(_, pos)| **pos == player_pos)
                     .for_each(|(item_entity, _)| {
                         commands.remove_component::<Point>(*item_entity);
                         commands.add_component(*item_entity, Carried(player_entity));
 
                         //You can only carry one weapon and one armor.
-                        if ecs.entry_ref(*item_entity).unwrap().get_component::<Weapon>().is_ok() {
-                            <(Entity, &Carried)>::query().filter(component::<Weapon>())
+                        if ecs
+                            .entry_ref(*item_entity)
+                            .unwrap()
+                            .get_component::<Weapon>()
+                            .is_ok()
+                        {
+                            <(Entity, &Carried)>::query()
+                                .filter(component::<Weapon>())
                                 .iter(ecs)
                                 .filter(|(_, carried)| carried.0 == player_entity)
-                                .for_each(|(wepons_entity, _) | {
+                                .for_each(|(wepons_entity, _)| {
                                     commands.remove(*wepons_entity);
-                                }
-                            );
+                                });
                         }
-                        if ecs.entry_ref(*item_entity).unwrap().get_component::<Armor>().is_ok() {
-                            <(Entity, &Carried)>::query().filter(component::<Armor>())
+                        if ecs
+                            .entry_ref(*item_entity)
+                            .unwrap()
+                            .get_component::<Armor>()
+                            .is_ok()
+                        {
+                            <(Entity, &Carried)>::query()
+                                .filter(component::<Armor>())
                                 .iter(ecs)
                                 .filter(|(_, carried)| carried.0 == player_entity)
-                                .for_each(|(wepons_entity, _) | {
+                                .for_each(|(wepons_entity, _)| {
                                     commands.remove(*wepons_entity);
-                                }
-                            );
+                                });
                         }
-                    }
-                );
+                    });
                 //grabing items doesn't skip player's turn.
                 new_turn = TurnState::AwaitingInput;
 
@@ -64,7 +74,7 @@ pub fn player_input(
             VirtualKeyCode::M => {
                 new_turn = TurnState::WorldMap;
                 Point::zero()
-            },
+            }
             VirtualKeyCode::Key1 => use_item(0, ecs, commands),
             VirtualKeyCode::Key2 => use_item(1, ecs, commands),
             VirtualKeyCode::Key3 => use_item(2, ecs, commands),

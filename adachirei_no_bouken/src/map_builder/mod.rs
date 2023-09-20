@@ -8,14 +8,14 @@ mod themes;
 use crate::prelude::*;
 const NUM_ROOMS: usize = 20;
 const NUM_MONSTERS: usize = 50;
-use automata::CellularAutomataArchitect;
-use drunkard::DrunkardArchitect;
-use rooms::RoomsArchitect;
 
 use self::{
     prefab::apply_prefab,
-    themes::{DungeonTheme, ForestTheme},
+    themes::{ResearchInstitueTheme, ForestTheme, StockRoomTheme},
 };
+use automata::CellularAutomataArchitect;
+use drunkard::DrunkardArchitect;
+use rooms::RoomsArchitect;
 
 pub trait MapArchitect {
     fn new(&mut self, rng: &mut RandomNumberGenerator) -> MapBuilder;
@@ -35,21 +35,35 @@ pub struct MapBuilder {
 }
 
 impl MapBuilder {
+    pub fn with_architect_and_theme(rng: &mut RandomNumberGenerator, mut architect: Box<dyn MapArchitect>, theme: Box<dyn MapTheme>) -> Self {
+        let mut mb = architect.new(rng);
+        apply_prefab(&mut mb, rng);
+        mb.theme = theme;
+
+        mb
+    }
+
     pub fn new(rng: &mut RandomNumberGenerator) -> Self {
-        let mut map_architect: Box<dyn MapArchitect> = match rng.range(0, 3) {
+        let map_architect: Box<dyn MapArchitect> = match rng.range(0, 3) {
             0 => Box::new(RoomsArchitect {}),
             1 => Box::new(DrunkardArchitect {}),
             _ => Box::new(CellularAutomataArchitect {}),
         };
-        let mut mb = map_architect.new(rng);
-        apply_prefab(&mut mb, rng);
-
-        mb.theme = match rng.range(0, 2) {
-            0 => DungeonTheme::new(),
-            _ => ForestTheme::new(),
+        let theme = match rng.range(0, 3) {
+            0 => ResearchInstitueTheme::new(),
+            1 => ForestTheme::new(),
+            _ => StockRoomTheme::new(),
         };
 
-        mb
+        MapBuilder::with_architect_and_theme(rng, map_architect, theme)
+    }
+
+    pub fn new_level(rng: &mut RandomNumberGenerator, level: usize) -> Self {
+        match level {
+            0 => MapBuilder::with_architect_and_theme(rng, Box::new(DrunkardArchitect{}), StockRoomTheme::new()),
+            1 => MapBuilder::with_architect_and_theme(rng, Box::new(RoomsArchitect{}), ResearchInstitueTheme::new()),
+            _ => MapBuilder::with_architect_and_theme(rng, Box::new(CellularAutomataArchitect{}), ForestTheme::new()),
+        }
     }
 
     fn fill(&mut self, tile: TileType) {
@@ -164,5 +178,3 @@ impl MapBuilder {
         spawns
     }
 }
-
-

@@ -11,7 +11,7 @@ pub struct Template {
     pub levels: HashSet<usize>,
     pub frequency: i32,
     pub name: String,
-    pub glyph: char,
+    pub glyph: FontCharType,
     pub provides: Option<Vec<(String, i32)>>,
     pub hp: Option<i32>,
     pub base_damage: Option<i32>,
@@ -61,8 +61,7 @@ impl Templates {
                 for _ in 0..t.frequency {
                     available_entities.push(t);
                 }
-            }
-        );
+            });
         let mut commands = CommandBuffer::new(ecs);
         spawn_points.iter().for_each(|pt| {
             if let Some(entity) = rng.random_slice_entry(&available_entities) {
@@ -82,7 +81,7 @@ impl Templates {
             pt.clone(),
             Render {
                 color: ColorPair::new(WHITE, BLACK),
-                glyph: to_cp437(template.glyph),
+                glyph: template.glyph,
             },
             Name(template.name.clone()),
         ));
@@ -95,7 +94,13 @@ impl Templates {
         }
 
         if let Some(health) = &template.hp {
-            commands.add_component(entity, Health {max: *health, current: *health});
+            commands.add_component(
+                entity,
+                Health {
+                    max: *health,
+                    current: *health,
+                },
+            );
         }
         if let Some(radius) = &template.field_of_view_radius {
             commands.add_component(entity, FieldOfVeiw::new(*radius));
@@ -105,12 +110,11 @@ impl Templates {
                 .iter()
                 .for_each(|(provides, n)| match provides.as_str() {
                     "Healing" => commands.add_component(entity, ProvidesHealing { amount: *n }),
-                    "MagicEye" => commands.add_component(entity, ProvidesWiderView{ amount: *n }),
+                    "MagicEye" => commands.add_component(entity, ProvidesWiderView { amount: *n }),
                     _ => {
                         println!("Warning: we don't know how to provide {}", provides);
                     }
-                }
-            );
+                });
         }
         if let Some(damage) = &template.base_damage {
             commands.add_component(entity, Damage(*damage));

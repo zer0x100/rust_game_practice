@@ -6,7 +6,7 @@ use crate::prelude::*;
 #[read_component(ProvidesWiderView)]
 #[write_component(Health)]
 #[write_component(FieldOfVeiw)]
-pub fn use_items(ecs: &mut SubWorld, #[resource] map: &mut Map, commands: &mut CommandBuffer) {
+pub fn use_items(ecs: &mut SubWorld, commands: &mut CommandBuffer) {
     let mut healing_to_apply = Vec::<(Entity, i32)>::new();
     let mut wider_view_to_apply = Vec::<(Entity, i32)>::new();
 

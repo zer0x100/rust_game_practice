@@ -41,7 +41,7 @@ impl State {
         let mut ecs = World::default();
         let mut resources = Resources::default();
         let mut rng = RandomNumberGenerator::new();
-        let mut map_builder = MapBuilder::new(&mut rng);
+        let mut map_builder = MapBuilder::new_level(&mut rng, 0);
         //spawn entities
         spawn_player(&mut ecs, map_builder.player_start);
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
@@ -69,7 +69,7 @@ impl State {
         self.ecs = World::default();
         self.resources = Resources::default();
         let mut rng = RandomNumberGenerator::new();
-        let mut map_builder = MapBuilder::new(&mut rng);
+        let mut map_builder = MapBuilder::new_level(&mut rng, 0);
         spawn_player(&mut self.ecs, map_builder.player_start);
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
         map_builder.map.tiles[exit_idx] = TileType::Exit;
@@ -83,7 +83,7 @@ impl State {
     }
 
     fn gameover(&mut self, ctx: &mut BTerm) {
-        ctx.set_active_console(2);
+        ctx.set_active_console(3);
         ctx.print_color_centered(2, RED, BLACK, "Your quest has ended.");
         ctx.print_color_centered(
             4,
@@ -111,7 +111,7 @@ impl State {
     }
 
     fn victory(&mut self, ctx: &mut BTerm) {
-        ctx.set_active_console(2);
+        ctx.set_active_console(3);
         ctx.print_color_centered(2, GREEN, BLACK, "You have won!");
         ctx.print_color_centered(
             4,
@@ -126,12 +126,7 @@ impl State {
             BLACK,
             "Your town is saved, and you can return to your normal life.",
         );
-        ctx.print_color_centered(
-            7,
-            GREEN,
-            BLACK,
-            "Press 1 to play again.",
-        );
+        ctx.print_color_centered(7, GREEN, BLACK, "Press 1 to play again.");
 
         if let Some(VirtualKeyCode::Key1) = ctx.key {
             self.reset_game();
@@ -147,23 +142,19 @@ impl State {
             for y in 0..SCREEN_HEIGHT {
                 for x in 0..SCREEN_WIDTH {
                     let idx = map_idx(x, y);
-                    if !map.revealed_tiles[idx] { continue; }
+                    if !map.revealed_tiles[idx] {
+                        continue;
+                    }
                     let glyph = map_theme.tile_to_render(map.tiles[idx]);
                     ctx.set(x, y, WHITE, BLACK, glyph);
                 }
             }
-            <&Point>::query().filter(component::<Player>())
+            <&Point>::query()
+                .filter(component::<Player>())
                 .iter(&self.ecs)
                 .for_each(|pos| {
-                    ctx.set(
-                        pos.x,
-                        pos.y,
-                        WHITE,
-                        BLACK,
-                        to_cp437('@'),
-                    );
-                }
-            );
+                    ctx.set(pos.x, pos.y, WHITE, BLACK, to_cp437('@'));
+                });
         }
 
         ctx.set_active_console(3);
@@ -207,17 +198,16 @@ impl State {
             .iter_mut(&mut self.ecs)
             .for_each(|fov| fov.is_dirty = true);
 
-        //Create a new map
+        //Create a new map, and place the player in a new map.
         let mut rng = RandomNumberGenerator::new();
         let mut map_builder = MapBuilder::new(&mut rng);
-
-        //Place the player in a new map.
         let mut map_level = 0;
         <(&mut Player, &mut Point)>::query()
             .iter_mut(&mut self.ecs)
             .for_each(|(player, pos)| {
                 player.map_level += 1;
                 map_level = player.map_level;
+                map_builder = MapBuilder::new_level(&mut rng, map_level as usize);
                 *pos = map_builder.player_start;
             });
 

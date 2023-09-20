@@ -50,7 +50,10 @@ pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer) {
             .filter(|(carried, _)| carried.0 == *victim)
             .map(|(_, defense)| defense.0)
             .sum();
-        let final_damage = std::cmp::max(0, base_damage + weapon_damage - (base_defense + armor_defense));
+        let final_damage = std::cmp::max(
+            0,
+            base_damage + weapon_damage - (base_defense + armor_defense),
+        );
 
         if let Ok(mut health) = ecs
             .entry_mut(*victim)

@@ -6,6 +6,8 @@ use crate::prelude::*;
 #[read_component(Item)]
 #[read_component(Carried)]
 #[read_component(Name)]
+#[read_component(Damage)]
+#[read_component(Defense)]
 pub fn hud(ecs: &SubWorld) {
     //Health Bar
     let mut health_query = <&Health>::query().filter(component::<Player>()); // (1)
@@ -34,17 +36,60 @@ pub fn hud(ecs: &SubWorld) {
         ColorPair::new(WHITE, RED),
     );
 
-    //Display the current level, and inventory
+    //Display the current level, and inventory, attack, and defense
     let (player, map_level) = <(Entity, &Player)>::query()
         .iter(ecs)
         .map(|(entity, player)| (entity, player.map_level))
         .nth(0)
         .unwrap();
+    //print map_level
     draw_batch.print_color_right(
         Point::new(SCREEN_WIDTH * 2, 1),
         format!("Dungeon Level: {}", map_level),
         ColorPair::new(YELLOW, BLACK),
     );
+    //print attack and defense
+    let base_damage = if let Ok(v) = ecs.entry_ref(*player) {
+        if let Ok(dmg) = v.get_component::<Damage>() {
+            dmg.0
+        } else {
+            0
+        }
+    } else {
+        0
+    };
+    let weapon_damage: i32 = <(&Carried, &Damage)>::query()
+        .iter(ecs)
+        .filter(|(carried, _)| carried.0 == *player)
+        .map(|(_, dmg)| dmg.0)
+        .sum();
+    let base_defense = if let Ok(v) = ecs.entry_ref(*player) {
+        if let Ok(defense) = v.get_component::<Defense>() {
+            defense.0
+        } else {
+            0
+        }
+    } else {
+        0
+    };
+    let armor_defense: i32 = <(&Carried, &Defense)>::query()
+        .iter(ecs)
+        .filter(|(carried, _)| carried.0 == *player)
+        .map(|(_, defense)| defense.0)
+        .sum();
+    let final_attack = base_damage + weapon_damage;
+    let final_defense = base_defense + armor_defense;
+    draw_batch.print_color_right(
+        Point::new(SCREEN_WIDTH * 2, 3),
+        format!("Attack: {}", final_attack),
+        ColorPair::new(YELLOW, BLACK),
+    );
+    draw_batch.print_color_right(
+        Point::new(SCREEN_WIDTH * 2, 4),
+        format!("Dungeon Level: {}", final_defense),
+        ColorPair::new(YELLOW, BLACK),
+    );
+
     let mut item_query = <(&Name, &Carried)>::query().filter(component::<Item>());
     let mut y = 3;
     item_query

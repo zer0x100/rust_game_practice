@@ -41,8 +41,8 @@ Templates(
         ),
         Template(
             entity_type: Item,
-            name : "Reinforced Fibers Hoodie", glyph: '<', levels: [ 0, 1, 2 ],
-            frequency: 3,
+            name : "Reinforced Fibers Hoodie", glyph: '<', levels: [ 1, 2 ],
+            frequency: 1,
             base_defense: Some(1),
         ),
 

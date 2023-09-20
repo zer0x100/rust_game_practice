@@ -6,6 +6,8 @@ use crate::prelude::*;
 #[read_component(Enemy)]
 #[read_component(Carried)]
 #[read_component(Item)]
+#[read_component(Weapon)]
+#[read_component(Armor)]
 pub fn player_input(
     ecs: &SubWorld,
     commands: &mut CommandBuffer,
@@ -32,6 +34,26 @@ pub fn player_input(
                     .for_each(|(item_entity, _)| {
                         commands.remove_component::<Point>(*item_entity);
                         commands.add_component(*item_entity, Carried(player_entity));
+
+                        //You can only carry one weapon and one armor.
+                        if ecs.entry_ref(*item_entity).unwrap().get_component::<Weapon>().is_ok() {
+                            <(Entity, &Carried)>::query().filter(component::<Weapon>())
+                                .iter(ecs)
+                                .filter(|(_, carried)| carried.0 == player_entity)
+                                .for_each(|(wepons_entity, _) | {
+                                    commands.remove(*wepons_entity);
+                                }
+                            );
+                        }
+                        if ecs.entry_ref(*item_entity).unwrap().get_component::<Armor>().is_ok() {
+                            <(Entity, &Carried)>::query().filter(component::<Armor>())
+                                .iter(ecs)
+                                .filter(|(_, carried)| carried.0 == player_entity)
+                                .for_each(|(wepons_entity, _) | {
+                                    commands.remove(*wepons_entity);
+                                }
+                            );
+                        }
                     }
                 );
                 //grabing items doesn't skip player's turn.

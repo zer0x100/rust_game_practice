@@ -8,7 +8,14 @@ pub use template::SpecialTag;
 pub fn spawn_player(ecs: &mut World, pos: Point) {
     ecs.push((
         Name("Adachi Rei".to_string()),
-        Player { map_level: 0 },
+        Player {
+            map_level: 0,
+            direction: Direction::Left,
+            left_glyph: 17,
+            right_glyph: 16,
+            up_glyph: 30,
+            down_glyph: 31, 
+        },
         pos,
         Render {
             color: ColorPair::new(WHITE, BLACK),

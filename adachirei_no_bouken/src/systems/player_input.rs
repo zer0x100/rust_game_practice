@@ -14,20 +14,52 @@ pub fn player_input(
     #[resource] key: &Option<VirtualKeyCode>,
     #[resource] turn_state: &mut TurnState,
 ) {
-    let mut players = <(Entity, &Point)>::query().filter(component::<Player>());
+    let mut players = <(Entity, &Point, &Player)>::query();
     if let Some(key) = *key {
         let mut new_turn = TurnState::PlayerTurn;
 
+        let (player_entity, player_pos, mut player_component) = players
+        .iter(ecs)
+        .find_map(|(entity, pos, player)| Some((*entity, *pos, *player)))
+        .unwrap();
         let delta = match key {
-            VirtualKeyCode::Left => Point::new(-1, 0),
-            VirtualKeyCode::Right => Point::new(1, 0),
-            VirtualKeyCode::Up => Point::new(0, -1),
-            VirtualKeyCode::Down => Point::new(0, 1),
+            //Turning does not skip player input turn.
+            VirtualKeyCode::Left => {
+                new_turn = TurnState::AwaitingInput;
+                player_component.direction = Direction::Left;
+                commands.add_component(player_entity, player_component);
+                Point::zero()
+            },
+            VirtualKeyCode::Right => {
+                new_turn = TurnState::AwaitingInput;
+                player_component.direction = Direction::Right;
+                commands.add_component(player_entity, player_component);
+                Point::zero()
+            },
+            VirtualKeyCode::Up => {
+                new_turn = TurnState::AwaitingInput;
+                player_component.direction = Direction::Up;
+                commands.add_component(player_entity, player_component);
+                Point::zero()
+            },
+            VirtualKeyCode::Down => {
+                new_turn = TurnState::AwaitingInput;
+                player_component.direction = Direction::Down;
+                commands.add_component(player_entity, player_component);
+                Point::zero()
+            },
+            VirtualKeyCode::A => {
+                match player_component.direction {
+                    Direction::Left => Point::new(-1, 0),
+                    Direction::Right => Point::new(1, 0),
+                    Direction::Up => Point::new(0, -1),
+                    Direction::Down => Point::new(0, 1),
+                }
+            }
             VirtualKeyCode::P => {
-                let (player_entity, player_pos) = players
-                    .iter(ecs)
-                    .find_map(|(entity, pos)| Some((*entity, *pos)))
-                    .unwrap();
+                //picking up items doesn't skip player's turn.
+                new_turn = TurnState::AwaitingInput;
+
                 let mut items = <(Entity, &Point)>::query().filter(component::<Item>());
                 items
                     .iter(ecs)
@@ -65,9 +97,8 @@ pub fn player_input(
                                     commands.remove(*wepons_entity);
                                 });
                         }
-                    });
-                //grabing items doesn't skip player's turn.
-                new_turn = TurnState::AwaitingInput;
+                    }
+                );
 
                 Point::zero()
             }
@@ -87,10 +118,7 @@ pub fn player_input(
             _ => Point::new(0, 0),
         };
 
-        let (player_entity, destination) = players
-            .iter(ecs)
-            .find_map(|(entity, pos)| Some((*entity, *pos + delta)))
-            .unwrap();
+        let destination = player_pos + delta;
 
         let mut enemies = <(Entity, &Point)>::query().filter(component::<Enemy>());
         if delta.x != 0 || delta.y != 0 {

@@ -7,13 +7,13 @@ Templates(
             entity_type: Item,
             name : "Fried Chicken", glyph : '!', levels : [ 0, 1, 2 ],
             provides: Some([ ("Healing", 6) ]),
-            frequency: 1
+            frequency: 2
         ),
         Template(
             entity_type: Item,
             name : "Small Fried Chicken", glyph : '!', levels : [ 0, 1, 2 ],
             provides: Some([ ("Healing", 2) ]),
-            frequency: 1
+            frequency: 2
         ),
         Template(
             entity_type: Item,
@@ -41,7 +41,7 @@ Templates(
         ),
         Template(
             entity_type: Item,
-            name : "Hoodie", glyph: '<', levels: [ 1, 2 ],
+            name : "Sturdy Hoodie", glyph: '<', levels: [ 1, 2 ],
             frequency: 1,
             base_defense: Some(1),
         ),
@@ -69,7 +69,7 @@ Templates(
             entity_type: Enemy,
             name : "Combat Robot B", glyph: 'O', levels : [ 1, 2 ],
             hp : Some(6),
-            frequency : 1,
+            frequency : 2,
             base_damage : Some(3),
             field_of_view_radius: Some(7),
             base_defense: Some(1),
@@ -78,7 +78,7 @@ Templates(
             entity_type: Enemy,
             name : "Combat Robot C", glyph : 'E', levels : [ 2 ],
             hp : Some(12),
-            frequency : 1,
+            frequency : 2,
             base_damage: Some(4),
             field_of_view_radius: Some(8),
             base_defense: Some(1),

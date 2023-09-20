@@ -46,7 +46,8 @@ impl State {
         spawn_player(&mut ecs, map_builder.player_start);
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
         map_builder.map.tiles[exit_idx] = TileType::Exit;
-        spawn_special_tagged(&mut ecs, map_builder.amulet_start, SpecialTag::UniqueEye);
+        let unique_item_start = rng.random_slice_entry(&map_builder.monster_spawns).unwrap();
+        spawn_special_tagged(&mut ecs, *unique_item_start, SpecialTag::UniqueEye);
         spawn_level(&mut ecs, &mut rng, 0, &map_builder.monster_spawns);
 
         //add resources
@@ -72,7 +73,8 @@ impl State {
         spawn_player(&mut self.ecs, map_builder.player_start);
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
         map_builder.map.tiles[exit_idx] = TileType::Exit;
-        spawn_special_tagged(&mut self.ecs, map_builder.amulet_start, SpecialTag::UniqueEye);
+        let unique_item_start = rng.random_slice_entry(&map_builder.monster_spawns).unwrap();
+        spawn_special_tagged(&mut self.ecs, *unique_item_start, SpecialTag::UniqueEye);
         spawn_level(&mut self.ecs, &mut rng, 0, &map_builder.monster_spawns);
         self.resources.insert(map_builder.map);
         self.resources.insert(Camera::new(map_builder.player_start));
@@ -185,14 +187,15 @@ impl State {
             });
 
         //add other entities
+        let unique_item_start = rng.random_slice_entry(&map_builder.monster_spawns).unwrap();
         if map_level == 2 {
             spawn_special_tagged(&mut self.ecs, map_builder.amulet_start, SpecialTag::Boss);
-            spawn_special_tagged(&mut self.ecs, map_builder.amulet_start, SpecialTag::UniqueWeapon);
+            spawn_special_tagged(&mut self.ecs, *unique_item_start, SpecialTag::UniqueWeapon);
         } else {
             let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
             map_builder.map.tiles[exit_idx] = TileType::Exit;
-            
-            spawn_special_tagged(&mut self.ecs, map_builder.amulet_start, SpecialTag::UniqueArmor);
+
+            spawn_special_tagged(&mut self.ecs, *unique_item_start, SpecialTag::UniqueArmor);
         }
         spawn_level(
             &mut self.ecs,

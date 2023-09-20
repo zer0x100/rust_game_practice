@@ -86,7 +86,7 @@ pub fn hud(ecs: &SubWorld) {
     );
     draw_batch.print_color_right(
         Point::new(SCREEN_WIDTH * 2, 4),
-        format!("Dungeon Level: {}", final_defense),
+        format!("Defense: {}", final_defense),
         ColorPair::new(YELLOW, BLACK),
     );
 

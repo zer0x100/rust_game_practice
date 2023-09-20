@@ -17,13 +17,7 @@ impl MapArchitect for EmptyArchitect {
         mb.fill(TileType::Floor);
         mb.player_start = Point::new(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
         mb.amulet_start = mb.find_most_distant();
-
-        for _ in 0..50 {
-            mb.monster_spawns.push(Point::new(
-                rng.range(1, SCREEN_WIDTH),
-                rng.range(1, SCREEN_HEIGHT),
-            ));
-        }
+        mb.monster_spawns = mb.spawn_monsters(&mb.player_start, rng);
 
         mb
     }

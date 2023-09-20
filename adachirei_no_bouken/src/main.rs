@@ -67,18 +67,22 @@ impl State {
 
     fn main_menue(&mut self, ctx: &mut BTerm) {
         ctx.set_active_console(3);
+
+        //Story
         ctx.print_centered(1, "Story");
+        ctx.print_color_centered(3, ORANGE, BLACK, "Humanoid Character Interface 3 Prototype 0,");
+        ctx.print_color_centered(4, ORANGE, BLACK, "codenamed Adachi Rei is starting up...");
+        ctx.print_centered(6, "She woke up receiving an emergency signal during a maintenance.");
+        ctx.print_centered(8, "It seems that a large number of robots are attacking the laboratory,");
+        ctx.print_centered(10, "and the doctor is about to be taken away by a giant robot.");
+        ctx.print_centered(12, "'War Robot Prototype' was written on his shoulder.");
+        ctx.print_centered(14, "Let's hurry and go to rescue him");
 
-
-        ctx.print_color_centered(3, PURPLE, BLACK, "write Story");
-
-        //TODO: write Story
-
-        ctx.print_color_centered(DISPLAY_HEIGHT, YELLOW, BLACK, "Display an illust");
+        ctx.print_color_centered(25, YELLOW, BLACK, "Display an illust");
 
         //TODO: Display an illust
 
-        ctx.print_centered(DISPLAY_HEIGHT * 2, "(P) Play Game");
+        ctx.print_color_centered(32, GREEN, BLACK, "(P) Play Game");
 
         if Some(VirtualKeyCode::P) == ctx.key {
             self.reset_game();
@@ -105,22 +109,15 @@ impl State {
     fn gameover(&mut self, ctx: &mut BTerm) {
         ctx.set_active_console(3);
         ctx.print_color_centered(2, RED, BLACK, "Your quest has ended.");
-        ctx.print_color_centered(
-            4,
-            WHITE,
-            BLACK,
-            "Slain by a robot, Adachi's journey has come to a premature end.",
-        );
+        ctx.print_centered(4, "Slain by a robot");
+        ctx.print_centered(8, "The doctor was taken away, and her battery was broken.");
+        ctx.print_centered(12, "After a while, her consciousness completely ceased.");
 
-        ctx.print_color_centered(3, PURPLE, BLACK, "write Story");
-
-        //TODO: write Story
-
-        ctx.print_color_centered(DISPLAY_HEIGHT, YELLOW, BLACK, "Display an illust");
+        ctx.print_color_centered(20, YELLOW, BLACK, "Display an illust");
 
         //TODO: Display an illust
 
-        ctx.print_color_centered(9, GREEN, BLACK, "(M) Go Back Main Menue");
+        ctx.print_color_centered(32, GREEN, BLACK, "(M) Go Back Main Menue");
 
         if let Some(VirtualKeyCode::M) = ctx.key {
             self.resources.insert(TurnState::MainMenue);
@@ -129,17 +126,15 @@ impl State {
 
     fn victory(&mut self, ctx: &mut BTerm) {
         ctx.set_active_console(3);
-        ctx.print_color_centered(2, GREEN, BLACK, "You have won!");
+        ctx.print_color_centered(2, BLUE, BLACK, "You have won!");
+        ctx.print_centered(8, "After a fierce battle,");
+        ctx.print_centered(12, "she defeated the giant robot and rescued the doctor.");
 
-        ctx.print_color_centered(3, PURPLE, BLACK, "write Story");
-
-        //TODO: write Story
-
-        ctx.print_color_centered(DISPLAY_HEIGHT, YELLOW, BLACK, "Display an illust");
+        ctx.print_color_centered(20, YELLOW, BLACK, "Display an illust");
 
         //TODO: Display an illust
 
-        ctx.print_color_centered(7, GREEN, BLACK, "(M) Go Back Main Menue");
+        ctx.print_color_centered(32, GREEN, BLACK, "(M) Go Back Main Menue");
 
         if let Some(VirtualKeyCode::M) = ctx.key {
             self.resources.insert(TurnState::MainMenue);

@@ -22,7 +22,7 @@ pub fn hud(ecs: &SubWorld) {
     draw_batch.bar_horizontal(
         // (5)
         Point::zero(),              // (6)
-        SCREEN_WIDTH * 2,           // (7)
+        DISPLAY_WIDTH * 3,           // (7)
         player_health.current,      // (8)
         player_health.max,          // (9)
         ColorPair::new(RED, BLACK), // (10)
@@ -44,7 +44,7 @@ pub fn hud(ecs: &SubWorld) {
         .unwrap();
     //print map_level
     draw_batch.print_color_right(
-        Point::new(SCREEN_WIDTH * 2, 1),
+        Point::new(DISPLAY_WIDTH * 3, 1),
         format!("Dungeon Level: {}", map_level),
         ColorPair::new(YELLOW, BLACK),
     );
@@ -80,12 +80,12 @@ pub fn hud(ecs: &SubWorld) {
     let final_attack = base_damage + weapon_damage;
     let final_defense = base_defense + armor_defense;
     draw_batch.print_color_right(
-        Point::new(SCREEN_WIDTH * 2, 3),
+        Point::new(DISPLAY_WIDTH * 3, 3),
         format!("Attack: {}", final_attack),
         ColorPair::new(YELLOW, BLACK),
     );
     draw_batch.print_color_right(
-        Point::new(SCREEN_WIDTH * 2, 4),
+        Point::new(DISPLAY_WIDTH * 3, 4),
         format!("Defense: {}", final_defense),
         ColorPair::new(YELLOW, BLACK),
     );

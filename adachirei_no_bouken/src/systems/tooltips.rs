@@ -26,7 +26,7 @@ pub fn tooltips(
         .iter(ecs) // (5)
         .filter(|(_, pos, _)| **pos == map_pos && player_fov.visible_tiles.contains(*pos)) // (6)
         .for_each(|(entity, _, name)| {
-            let screen_pos = *mouse_pos * 4; // (7)
+            let screen_pos = *mouse_pos * 3; // (7)
             let display = if let Ok(health) = ecs
                 .entry_ref(*entity) // (8)
                 .unwrap()

@@ -17,7 +17,7 @@ Templates(
         ),
         Template(
             entity_type: Item,
-            name : "Console Head Set with LED Light", glyph : '{', levels : [ 0, 1, 2 ],
+            name : "Map", glyph : '{', levels : [ 0, 1, 2 ],
             provides: Some([ ("MagicMap", 0) ]),
             frequency: 1
         ),
@@ -101,9 +101,9 @@ Templates(
         //Speciall eye
         Template(
             entity_type: Item,
-            name : "High Performance Eye Parts", glyph: '&', levels: [ ],
+            name : "Console Head Set with LED Light", glyph: '&', levels: [ ],
             frequency: 0,
-            provides: Some([ ("MagicEye", 3) ]),
+            provides: Some([ ("MagicEye", 4) ]),
             special_tag: Some(UniqueEye),
         ),
         //Speciall weapon

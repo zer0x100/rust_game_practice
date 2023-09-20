@@ -130,12 +130,47 @@ impl State {
             7,
             GREEN,
             BLACK,
-            "Press 1 to \
-        play again.",
+            "Press 1 to play again.",
         );
 
         if let Some(VirtualKeyCode::Key1) = ctx.key {
             self.reset_game();
+        }
+    }
+
+    fn world_map(&mut self, ctx: &mut BTerm) {
+        //Display world map, and player
+        {
+            ctx.set_active_console(1);
+            let map = self.resources.get::<Map>().unwrap();
+            let map_theme = self.resources.get::<Box<dyn MapTheme>>().unwrap();
+            for y in 0..SCREEN_HEIGHT {
+                for x in 0..SCREEN_WIDTH {
+                    let idx = map_idx(x, y);
+                    if !map.revealed_tiles[idx] { continue; }
+                    let glyph = map_theme.tile_to_render(map.tiles[idx]);
+                    ctx.set(x, y, WHITE, BLACK, glyph);
+                }
+            }
+            <&Point>::query().filter(component::<Player>())
+                .iter(&self.ecs)
+                .for_each(|pos| {
+                    ctx.set(
+                        pos.x,
+                        pos.y,
+                        WHITE,
+                        BLACK,
+                        to_cp437('@'),
+                    );
+                }
+            );
+        }
+
+        ctx.set_active_console(3);
+        ctx.print_centered(1, "(M) Quit Display The WorldMap");
+
+        if Some(VirtualKeyCode::M) == ctx.key {
+            self.resources.insert(TurnState::AwaitingInput);
         }
     }
 
@@ -220,6 +255,9 @@ impl GameState for State {
         ctx.cls();
         ctx.set_active_console(2);
         ctx.cls();
+        ctx.set_active_console(3);
+        ctx.cls();
+
         self.resources.insert(ctx.key);
         ctx.set_active_console(0);
         self.resources.insert(Point::from_tuple(ctx.mouse_pos()));
@@ -238,6 +276,7 @@ impl GameState for State {
             TurnState::GameOver => self.gameover(ctx),
             TurnState::Victory => self.victory(ctx),
             TurnState::NextLevel => self.advance_level(),
+            TurnState::WorldMap => self.world_map(ctx),
         }
         render_draw_buffer(ctx).expect("Render error");
     }
@@ -255,6 +294,7 @@ fn main() -> BError {
         .with_font("dungeonfont.png", 32, 32)
         .with_font("terminal8x8.png", 8, 8)
         .with_simple_console(DISPLAY_WIDTH, DISPLAY_HEIGHT, "dungeonfont.png")
+        .with_simple_console_no_bg(SCREEN_WIDTH, SCREEN_HEIGHT, "dungeonfont.png")
         .with_simple_console_no_bg(DISPLAY_WIDTH, DISPLAY_HEIGHT, "dungeonfont.png")
         .with_simple_console_no_bg(DISPLAY_WIDTH * 3, DISPLAY_HEIGHT * 3, "terminal8x8.png")
         .build()?;

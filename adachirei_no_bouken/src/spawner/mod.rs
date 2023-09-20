@@ -17,7 +17,7 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
             current: 15,
             max: 15,
         },
-        FieldOfVeiw::new(5),
+        FieldOfVeiw::new(4),
         Damage(1),
         Defense(0),
     ));

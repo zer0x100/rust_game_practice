@@ -17,8 +17,9 @@ pub fn hud(ecs: &SubWorld) {
         .unwrap();
 
     let mut draw_batch = DrawBatch::new();
-    draw_batch.target(2); // (3)
+    draw_batch.target(3); // (3)
     draw_batch.print_centered(1, "Explore the Dungeon. Cursor keys to move."); // (4)
+    draw_batch.print_color_centered(2, "(G) Grab Items / (M) Display World Map", ColorPair::new(PURPLE, BLACK));
     draw_batch.bar_horizontal(
         // (5)
         Point::zero(),              // (6)

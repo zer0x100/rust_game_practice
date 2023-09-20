@@ -21,6 +21,10 @@ pub trait MapArchitect {
     fn new(&mut self, rng: &mut RandomNumberGenerator) -> MapBuilder;
 }
 
+pub trait MapTheme: Sync + Send {
+    fn tile_to_render(&self, tile_type: TileType) -> FontCharType;
+}
+
 pub struct MapBuilder {
     pub map: Map,
     pub rooms: Vec<Rect>,
@@ -161,6 +165,4 @@ impl MapBuilder {
     }
 }
 
-pub trait MapTheme: Sync + Send {
-    fn tile_to_render(&self, tile_type: TileType) -> FontCharType;
-}
+

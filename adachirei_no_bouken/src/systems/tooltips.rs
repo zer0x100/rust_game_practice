@@ -15,7 +15,7 @@ pub fn tooltips(
     let offset = Point::new(camera.left_x, camera.top_y);
     let map_pos = *mouse_pos + offset; // (4)
     let mut draw_batch = DrawBatch::new();
-    draw_batch.target(2);
+    draw_batch.target(3);
 
     let player_fov = <&FieldOfVeiw>::query()
         .filter(component::<Player>())

@@ -6,4 +6,5 @@ pub enum TurnState {
     GameOver,
     Victory,
     NextLevel,
+    WorldMap,
 }

@@ -61,6 +61,10 @@ pub fn player_input(
 
                 Point::zero()
             }
+            VirtualKeyCode::M => {
+                new_turn = TurnState::WorldMap;
+                Point::zero()
+            },
             VirtualKeyCode::Key1 => use_item(0, ecs, commands),
             VirtualKeyCode::Key2 => use_item(1, ecs, commands),
             VirtualKeyCode::Key3 => use_item(2, ecs, commands),

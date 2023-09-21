@@ -11,7 +11,10 @@ pub struct Template {
     pub levels: HashSet<usize>,
     pub frequency: i32,
     pub name: String,
-    pub anime_frames: Vec<FontCharType>,
+    pub left_frames: Vec<FontCharType>,
+    pub right_frames: Vec<FontCharType>,
+    pub up_frames: Vec<FontCharType>,
+    pub down_frames: Vec<FontCharType>,
     pub provides: Option<Vec<(String, i32)>>,
     pub hp: Option<i32>,
     pub base_damage: Option<i32>,
@@ -19,6 +22,10 @@ pub struct Template {
     pub special_tag: Option<SpecialTag>,
     pub field_of_view_radius: Option<i32>,
     pub heat_seeking: bool,
+    pub attack_left_frames: Option<Vec<FontCharType>>,
+    pub attack_right_frames: Option<Vec<FontCharType>>,
+    pub attack_up_frames: Option<Vec<FontCharType>>,
+    pub attack_down_frames: Option<Vec<FontCharType>>,
 }
 
 #[derive(Clone, Deserialize, Debug, PartialEq)]
@@ -82,7 +89,11 @@ impl Templates {
             pt.clone(),
             Render {
                 color: ColorPair::new(WHITE, BLACK),
-                anime_frames: SmallVec::from_vec(template.anime_frames.clone()),
+                left_frames: SmallVec::from_vec(template.left_frames.clone()),
+                right_frames: SmallVec::from_vec(template.right_frames.clone()),
+                up_frames: SmallVec::from_vec(template.up_frames.clone()),
+                down_frames: SmallVec::from_vec(template.down_frames.clone()),
+                direction: Direction::Down,
                 current_frame: 0,
                 elasped_time_from_last_frame: 0.0,
             },
@@ -133,6 +144,20 @@ impl Templates {
         }
         if template.heat_seeking {
             commands.add_component(entity, HeatSeeking{ saw_player: false });
+        }
+        if let Some(attack_left_frames) = &template.attack_left_frames{
+            if let Some(attack_right_frames) = &template.attack_right_frames {
+                if let Some(attack_up_frames) = &template.attack_up_frames {
+                    if let Some(attack_down_frames) = &template.attack_down_frames {
+                        commands.add_component(entity, AttackFrames {
+                            left: SmallVec::from_vec(attack_left_frames.clone()),
+                            right: SmallVec::from_vec(attack_right_frames.clone()),
+                            up: SmallVec::from_vec(attack_up_frames.clone()),
+                            down: SmallVec::from_vec(attack_down_frames.clone()),
+                        });
+                    }
+                }
+            }
         }
 
         //check special tag

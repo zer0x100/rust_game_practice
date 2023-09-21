@@ -19,6 +19,7 @@ pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer, #[resource] turn
     victims.iter().for_each(|(message, attacker, victim)| {
         //If the attacker has AttackMotion, display it.
         //send EffectMotion Message, and chage TurnState to EffectAnime
+        let mut no_attack_motion = true;
         if let Ok(attacker) = ecs.entry_ref(*attacker) {
             if let Ok(attack_motion) = attacker.get_component::<AttackFrames>() {
                 if let Ok(attacker_pos) = attacker.get_component::<Point>() {
@@ -38,15 +39,18 @@ pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer, #[resource] turn
                                     anime_frames,
                                     current_frame: 0,
                                     elasped_time_from_last_frame: 0.0,
-                                    prev_turn: *turn,
                                 })
                             );
                             
-                            *turn = TurnState::EffectAnime;
+                            no_attack_motion = false;
                         }
                     }
                 }
             }
+        }
+        if !no_attack_motion {
+            commands.push(((), TurnBeforeEffects(*turn)));
+            *turn = TurnState::EffectAnime;
         }
 
         //calculate the damage

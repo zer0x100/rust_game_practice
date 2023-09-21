@@ -18,7 +18,7 @@ pub fn end_turn(ecs: &SubWorld, #[resource] turn_state: &mut TurnState, #[resour
 
     let currnet_state = turn_state.clone();
     let mut new_state = match turn_state {
-        TurnState::AwaitingInput => return,
+        TurnState::AwaitingInput => TurnState::PlayerTurn,
         TurnState::PlayerTurn => TurnState::MonsterTurn,
         TurnState::MonsterTurn => TurnState::AwaitingInput,
         _ => currnet_state,
@@ -33,10 +33,10 @@ pub fn end_turn(ecs: &SubWorld, #[resource] turn_state: &mut TurnState, #[resour
         if map.tiles[idx] == TileType::Exit {
             new_state = TurnState::NextLevel;
         }
-        if boss_health < 1 {
-            new_state = TurnState::Victory;
-        }
     });
+    if boss_health < 1 {
+        new_state = TurnState::Victory;
+    }
 
     *turn_state = new_state;
 }

@@ -18,14 +18,36 @@ pub fn entity_render(ecs: &mut SubWorld, #[resource] camera: &Camera, #[resource
         .iter_mut(ecs)
         .filter(|(pos, _)| player_fov.visible_tiles.contains(pos))
         .for_each(|(pos, render)| {
-                draw_batch.set(*pos - offset, render.color, render.anime_frames[render.current_frame]);
+            render.elasped_time_from_last_frame += elasped_time;
+            if render.elasped_time_from_last_frame > ANIME_FRAME_DURATION {
+                render.elasped_time_from_last_frame = 0.0;
+                render.current_frame += 1;
+            }
 
-                render.elasped_time_from_last_frame += elasped_time;
-                if render.elasped_time_from_last_frame > ANIME_FRAME_DURATION {
-                    render.elasped_time_from_last_frame = 0.0;
-                    render.current_frame += 1;
-                    render.current_frame %= render.anime_frames.len();
-                }
+            let glyph = match render.direction {
+                Direction::Left => {
+                    render.current_frame %= render.left_frames.len();
+                    render.left_frames[render.current_frame]
+                },
+                Direction::Right => {
+                    render.current_frame %= render.right_frames.len();
+                    render.right_frames[render.current_frame]
+                },
+                Direction::Up => {
+                    render.current_frame %= render.up_frames.len();
+                    render.up_frames[render.current_frame]
+                },
+                Direction::Down => {
+                    render.current_frame %= render.down_frames.len();
+                    render.down_frames[render.current_frame]
+                },
+            };
+
+            draw_batch.set(
+                *pos - offset,
+                render.color,
+                glyph,
+            );
         });
     draw_batch.submit(5000).expect("Batch error");
 }

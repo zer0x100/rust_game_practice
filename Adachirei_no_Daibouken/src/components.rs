@@ -4,7 +4,11 @@ use std::collections::HashSet;
 #[derive(Clone, Debug, PartialEq)]
 pub struct Render {
     pub color: ColorPair,
-    pub anime_frames: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
+    pub left_frames: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
+    pub right_frames: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
+    pub up_frames: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
+    pub down_frames: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
+    pub direction: Direction,
     pub current_frame: usize,
     pub elasped_time_from_last_frame: f32,
 }
@@ -126,5 +130,7 @@ pub struct EffectMotion {
     pub anime_frames: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
     pub current_frame: usize,
     pub elasped_time_from_last_frame: f32,
-    pub prev_turn: TurnState,
 }
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct TurnBeforeEffects(pub TurnState);

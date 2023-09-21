@@ -2,6 +2,7 @@ use crate::prelude::*;
 
 #[system]
 #[write_component(EffectMotion)]
+#[read_component(TurnBeforeEffects)]
 pub fn effect_anime(
         ecs: &mut SubWorld,
         #[resource] elasped_time: &f32,
@@ -14,12 +15,10 @@ pub fn effect_anime(
 
     let offset = Point::new(camera.left_x, camera.top_y);
     let mut no_effects = true;
-    let mut prev_turn = TurnState::PlayerTurn;
     <(Entity, &mut EffectMotion)>::query()
         .iter_mut(ecs)
         .for_each(|(message_entity, effect_motion)| {
             no_effects= false;
-            prev_turn = effect_motion.prev_turn;
 
             draw_batch.set(
                 effect_motion.position - offset,
@@ -39,11 +38,20 @@ pub fn effect_anime(
     );
     //EffectMotionが無かったら、TurnStateをBasice Game Loopに戻す
     if no_effects {
-        *turn = match prev_turn {
+        let mut tur_before_effects = TurnState::MainMenue;
+        <(Entity, &TurnBeforeEffects)>::query()
+            .iter(ecs)
+            .for_each(|(entity, turn)| {
+                tur_before_effects = turn.0;
+                commands.remove(*entity);
+            }
+        );
+
+        *turn = match tur_before_effects {
             TurnState::AwaitingInput => TurnState::PlayerTurn,
             TurnState::PlayerTurn => TurnState::MonsterTurn,
             TurnState::MonsterTurn => TurnState::AwaitingInput,
-            _ => prev_turn,
+            _ => tur_before_effects
         };
     }
 

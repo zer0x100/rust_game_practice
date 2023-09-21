@@ -11,7 +11,7 @@ pub struct Template {
     pub levels: HashSet<usize>,
     pub frequency: i32,
     pub name: String,
-    pub glyph: FontCharType,
+    pub anime_frames: Vec<FontCharType>,
     pub provides: Option<Vec<(String, i32)>>,
     pub hp: Option<i32>,
     pub base_damage: Option<i32>,
@@ -82,7 +82,9 @@ impl Templates {
             pt.clone(),
             Render {
                 color: ColorPair::new(WHITE, BLACK),
-                glyph: template.glyph,
+                anime_frames: SmallVec::from_vec(template.anime_frames.clone()),
+                current_frame: 0,
+                elasped_time_from_last_frame: 0.0,
             },
             Name(template.name.clone()),
         ));

@@ -19,6 +19,7 @@ mod prelude {
     pub const DISPLAY_WIDTH: i32 = SCREEN_WIDTH / 3;
     pub const DISPLAY_HEIGHT: i32 = SCREEN_HEIGHT / 3;
     pub const ANIME_FRAME_DURATION: f32 = 75.0;
+    pub const MAX_NUM_FRAMES: usize = 10;
     pub use crate::camera::*;
     pub use crate::components::*;
     pub use crate::map::*;
@@ -263,9 +264,8 @@ impl GameState for State {
         ctx.set_active_console(3);
         ctx.cls();
 
-        //take input and time
-        let new_time = self.resources.get::<f32>().unwrap().clone() + ctx.frame_time_ms;
-        self.resources.insert(new_time);
+        //take input and elasped time from last tick
+        self.resources.insert(ctx.frame_time_ms);
         self.resources.insert(ctx.key);
         ctx.set_active_console(0);
         self.resources.insert(Point::from_tuple(ctx.mouse_pos()));

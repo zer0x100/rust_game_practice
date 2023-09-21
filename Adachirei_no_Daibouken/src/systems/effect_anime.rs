@@ -4,7 +4,7 @@ use crate::prelude::*;
 #[write_component(EffectMotion)]
 pub fn effect_anime(
         ecs: &mut SubWorld,
-        #[resource] current_time: &f32,
+        #[resource] elasped_time: &f32,
         #[resource] turn: &mut TurnState,
         #[resource] camera: &Camera,
         commands: &mut CommandBuffer,
@@ -27,12 +27,13 @@ pub fn effect_anime(
                 effect_motion.anime_frames[effect_motion.current_frame]
             );
             //adjust current frame
-            if *current_time >= effect_motion.last_frame_time + ANIME_FRAME_DURATION {
+            effect_motion.elasped_time_from_last_frame += elasped_time;
+            if effect_motion.elasped_time_from_last_frame > ANIME_FRAME_DURATION {
                 effect_motion.current_frame += 1;
                 if effect_motion.current_frame >= effect_motion.anime_frames.len() {
                     commands.remove(*message_entity);
                 }
-                effect_motion.last_frame_time = *current_time;
+                effect_motion.elasped_time_from_last_frame = 0.0;
             }
         }
     );

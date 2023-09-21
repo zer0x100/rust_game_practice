@@ -22,7 +22,9 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
             pos,
             Render {
                 color: ColorPair::new(WHITE, BLACK),
-                glyph: to_cp437('@'),
+                anime_frames: smallvec![to_cp437('@')],
+                current_frame: 0,
+                elasped_time_from_last_frame: 0.0,
             },
             Health {
                 current: 15,
@@ -41,10 +43,10 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
     //can't push more than 9 components at once?
     let mut cb = CommandBuffer::new(&ecs);
     cb.add_component(entity, AttackFrames{
-        left: [48, 49, 50, 51, 52, 53],
-        right: [48, 49, 50, 51, 52, 53],
-        up: [1, 2, 3, 4, 5, 6],
-        down: [1, 2, 3, 4, 5, 6],
+        left: smallvec![48, 49, 50, 51, 52, 53],
+        right: smallvec![48, 49, 50, 51, 52, 53],
+        up: smallvec![1, 2, 3, 4, 5, 6],
+        down: smallvec![1, 2, 3, 4, 5, 6],
     });
     cb.flush(ecs);
 }

@@ -1,10 +1,12 @@
 pub use crate::prelude::*;
 use std::collections::HashSet;
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Render {
     pub color: ColorPair,
-    pub glyph: FontCharType,
+    pub anime_frames: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
+    pub current_frame: usize,
+    pub elasped_time_from_last_frame: f32,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -116,17 +118,17 @@ pub struct HeatSeeking {
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct AttackFrames {
-    pub left: [FontCharType; 6],
-    pub right: [FontCharType; 6],
-    pub up: [FontCharType; 6],
-    pub down: [FontCharType; 6],
+    pub left: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
+    pub right: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
+    pub up: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
+    pub down: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
 }
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct EffectMotion {
     pub position: Point,
-    pub anime_frames: [FontCharType; 6],
+    pub anime_frames: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
     pub current_frame: usize,
-    pub last_frame_time: f32,
+    pub elasped_time_from_last_frame: f32,
     pub prev_turn: TurnState,
 }

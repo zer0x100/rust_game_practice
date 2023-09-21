@@ -5,42 +5,48 @@ Templates(
         //Items
         Template(
             entity_type: Item,
-            name : "Fried Chicken", glyph : 33, levels : [ 0, 1, 2 ],
+            name : "Fried Chicken",
+            anime_frames: [ 33 ], levels : [ 0, 1, 2 ],
             provides: Some([ ("Healing", 6) ]),
             frequency: 2,
             heat_seeking: false,
         ),
         Template(
             entity_type: Item,
-            name : "Small Fried Chicken", glyph : 33, levels : [ 0, 1, 2 ],
+            name : "Small Fried Chicken", 
+            anime_frames: [ 33 ], levels : [ 0, 1, 2 ],
             provides: Some([ ("Healing", 2) ]),
             frequency: 2,
             heat_seeking: false,
         ),
         Template(
             entity_type: Item,
-            name: "Sturdy Arm", glyph: 47, levels : [ 0 ],
+            name: "Sturdy Arm",
+            anime_frames: [ 47 ], levels : [ 0 ],
             frequency : 1,
             base_damage: Some(1),
             heat_seeking: false,
         ),
         Template(
             entity_type: Item,
-            name : "Combat Arm", glyph: 83, levels: [ 1 ],
+            name : "Combat Arm",
+            anime_frames: [ 83 ], levels: [ 1 ],
             frequency: 1,
             base_damage: Some(2),
             heat_seeking: false,
         ),
         Template(
             entity_type: Item,
-            name : "Lightning Arm", glyph: 61, levels: [ 2 ],
+            name : "Lightning Arm",
+            anime_frames: [ 61 ], levels: [ 2 ],
             frequency: 1,
             base_damage: Some(3),
             heat_seeking: false,
         ),
         Template(
             entity_type: Item,
-            name : "Sturdy Hoodie", glyph: 60, levels: [ 1, 2 ],
+            name : "Sturdy Hoodie",
+            anime_frames: [ 60 ], levels: [ 1, 2 ],
             frequency: 1,
             base_defense: Some(1),
             heat_seeking: false,
@@ -49,7 +55,8 @@ Templates(
         //Enemies
         Template(
             entity_type: Enemy,
-            name : "Transport Robot", glyph : 103, levels : [ 0 ],
+            name : "Transport Robot",
+            anime_frames: [ 103, 103, 103, 102, 102, 102 ], levels : [ 0 ],
             hp : Some(1),
             frequency: 3,
             base_damage: Some(1),
@@ -59,7 +66,8 @@ Templates(
         ),
         Template(
             entity_type: Enemy,
-            name : "Combat Robot A", glyph : 111, levels : [ 0, 1, 2 ],
+            name : "Combat Robot A",
+            anime_frames: [ 111, 111, 111, 110, 110, 110 ], levels : [ 0, 1, 2 ],
             hp : Some(3),
             frequency: 2,
             base_damage: Some(2),
@@ -69,7 +77,8 @@ Templates(
         ),
         Template(
             entity_type: Enemy,
-            name : "Combat Robot B", glyph: 79, levels : [ 1, 2 ],
+            name : "Combat Robot B",
+            anime_frames: [ 79, 79, 79, 80, 80, 80 ], levels : [ 1, 2 ],
             hp : Some(6),
             frequency : 2,
             base_damage : Some(3),
@@ -79,7 +88,8 @@ Templates(
         ),
         Template(
             entity_type: Enemy,
-            name : "Combat Robot C", glyph : 69, levels : [ 2 ],
+            name : "Combat Robot C",
+            anime_frames: [ 69, 69, 69, 70, 70, 70], levels : [ 2 ],
             hp : Some(12),
             frequency : 2,
             base_damage: Some(4),
@@ -94,7 +104,8 @@ Templates(
         //Boss enemy
         Template(
             entity_type: Enemy,
-            name : "War Robot Prototype", glyph : 124, levels : [ ],
+            name : "War Robot Prototype",
+            anime_frames: [ 124, 124, 124, 125, 125, 125 ], levels : [ ],
             hp : Some(20),
             frequency : 0,
             base_damage: Some(5),
@@ -107,7 +118,8 @@ Templates(
         //Speciall eye
         Template(
             entity_type: Item,
-            name : "Console Head Set with LED Light", glyph: 38, levels: [ ],
+            name : "Console Head Set with LED Light",
+            anime_frames: [ 33 ], levels: [ ],
             frequency: 0,
             provides: Some([ ("MagicEye", 4) ]),
             special_tag: Some(UniqueEye),
@@ -116,7 +128,8 @@ Templates(
         //Speciall weapon
         Template(
             entity_type: Item,
-            name : "Jet Engine Arm", glyph: 94, levels: [ ],
+            name : "Jet Engine Arm",
+            anime_frames: [ 94 ], levels: [ ],
             frequency: 0,
             base_damage: Some(7),
             special_tag: Some(UniqueWeapon),
@@ -125,7 +138,8 @@ Templates(
         //Speciall armor
         Template(
             entity_type: Item,
-            name : "Reinforced Fibers Hoodie", glyph: 37, levels: [ ],
+            name : "Reinforced Fibers Hoodie",
+            anime_frames: [ 37 ], levels: [ ],
             frequency: 0,
             base_defense: Some(3),
             special_tag: Some(UniqueArmor),

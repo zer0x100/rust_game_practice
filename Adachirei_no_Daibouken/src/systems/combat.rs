@@ -8,7 +8,7 @@ use crate::prelude::*;
 #[read_component(Defense)]
 #[read_component(Point)]
 #[read_component(AttackFrames)]
-pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer, #[resource] turn: &mut TurnState, #[resource] current_time: &f32) {
+pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer, #[resource] turn: &mut TurnState) {
     let mut attackers = <(Entity, &WantsToAttack)>::query();
 
     let victims: Vec<(Entity, Entity, Entity)> = attackers // (1)
@@ -26,10 +26,10 @@ pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer, #[resource] turn
                         if let Ok(victim_pos) = victim.get_component::<Point>() {
                             let direction = *victim_pos - *attacker_pos;
                             let anime_frames = match (direction.x, direction.y) {
-                                (-1, 0) => attack_motion.left,
-                                (1, 0) => attack_motion.right,
-                                (0, -1) => attack_motion.up,
-                                _ => attack_motion.down
+                                (-1, 0) => attack_motion.left.clone(),
+                                (1, 0) => attack_motion.right.clone(),
+                                (0, -1) => attack_motion.up.clone(),
+                                _ => attack_motion.down.clone(),
                             };
 
                             commands.push(
@@ -37,7 +37,7 @@ pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer, #[resource] turn
                                     position: *attacker_pos,
                                     anime_frames,
                                     current_frame: 0,
-                                    last_frame_time: *current_time,
+                                    elasped_time_from_last_frame: 0.0,
                                     prev_turn: *turn,
                                 })
                             );

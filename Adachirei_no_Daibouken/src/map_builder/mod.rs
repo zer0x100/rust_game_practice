@@ -109,24 +109,35 @@ impl MapBuilder {
     }
 
     fn spawn_monsters(&self, player_start: &Point, rng: &mut RandomNumberGenerator) -> Vec<Point> {
-        let spawnable_tiles: Vec<Point> = self
-            .map
-            .tiles
+
+        let dijkstra_map = DijkstraMap::new(
+            SCREEN_WIDTH,
+            SCREEN_HEIGHT,
+            &vec![map_idx(player_start.x, player_start.y)],
+            &self.map,
+            1024.0
+        );
+
+        const UNREACHABLE: &f32 = &f32::MAX;
+        let spawnable_tiles: Vec<Point> = dijkstra_map.map
             .iter()
             .enumerate()
-            .filter(|(idx, t)| {
-                **t == TileType::Floor
-                    && DistanceAlg::Pythagoras
-                        .distance2d(*player_start, self.map.index_to_point2d(*idx))
-                        > 10.0
+            .filter(|(idx, v)| {
+                *v < UNREACHABLE && DistanceAlg::Pythagoras
+                    .distance2d(*player_start, self.map.index_to_point2d(*idx)) > 10.0
             })
             .map(|(idx, _)| self.map.index_to_point2d(idx))
             .collect();
 
         let mut spawns = Vec::new();
-        for _ in 0..NUM_MONSTERS {
+        use std::collections::HashSet;
+        let mut already_exist_idx = HashSet::new();
+        while spawns.len() < NUM_MONSTERS {
             let target_idx = rng.random_slice_index(&spawnable_tiles).unwrap();
-            spawns.push(spawnable_tiles[target_idx]);
+            if !already_exist_idx.contains(&target_idx) {
+                spawns.push(spawnable_tiles[target_idx]);
+                already_exist_idx.insert(target_idx);
+            }
         }
         spawns
     }

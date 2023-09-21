@@ -6,7 +6,6 @@ mod rooms;
 mod themes;
 
 use crate::prelude::*;
-const NUM_ROOMS: usize = 20;
 const NUM_MONSTERS: usize = 50;
 
 use self::{
@@ -27,7 +26,6 @@ pub trait MapTheme: Sync + Send {
 
 pub struct MapBuilder {
     pub map: Map,
-    pub rooms: Vec<Rect>,
     pub monster_spawns: Vec<Point>,
     pub player_start: Point,
     pub amulet_start: Point,
@@ -70,6 +68,24 @@ impl MapBuilder {
         self.map.tiles.iter_mut().for_each(|t| *t = tile);
     }
 
+    fn apply_horizontal_tunnel(&mut self, x1: i32, x2: i32, y: i32) {
+        use std::cmp::{max, min};
+        for x in min(x1, x2)..=max(x1, x2) {
+            if let Some(idx) = self.map.try_idx(Point::new(x, y)) {
+                self.map.tiles[idx as usize] = TileType::Floor;
+            }
+        }
+    }
+
+    fn apply_vertical_tunnel(&mut self, y1: i32, y2: i32, x: i32) {
+        use std::cmp::{max, min};
+        for y in min(y1, y2)..=max(y1, y2) {
+            if let Some(idx) = self.map.try_idx(Point::new(x, y)) {
+                self.map.tiles[idx as usize] = TileType::Floor;
+            }
+        }
+    }
+
     fn find_most_distant(&self) -> Point {
         let dijkstra_map = DijkstraMap::new(
             SCREEN_WIDTH,
@@ -91,6 +107,7 @@ impl MapBuilder {
                 .0,
         )
     }
+/*
 
     fn build_random_rooms(&mut self, rng: &mut RandomNumberGenerator) {
         while self.rooms.len() < NUM_ROOMS {
@@ -154,6 +171,9 @@ impl MapBuilder {
             }
         }
     }
+
+
+*/
 
     fn spawn_monsters(&self, player_start: &Point, rng: &mut RandomNumberGenerator) -> Vec<Point> {
         let spawnable_tiles: Vec<Point> = self

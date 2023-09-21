@@ -14,15 +14,11 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
             Player {
                 map_level: 0,
                 direction: Direction::Left,
-                left_glyph: 17,
-                right_glyph: 16,
-                up_glyph: 30,
-                down_glyph: 31, 
             },
             pos,
             Render {
                 color: ColorPair::new(WHITE, BLACK),
-                anime_frames: smallvec![to_cp437('@')],
+                anime_frames: smallvec![64, 64, 64, 63, 63, 63],
                 current_frame: 0,
                 elasped_time_from_last_frame: 0.0,
             },

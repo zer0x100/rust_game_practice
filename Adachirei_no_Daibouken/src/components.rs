@@ -13,10 +13,6 @@ pub struct Render {
 pub struct Player {
     pub map_level: u32,
     pub direction: Direction,
-    pub left_glyph: FontCharType,
-    pub right_glyph: FontCharType,
-    pub up_glyph: FontCharType,
-    pub down_glyph: FontCharType,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]

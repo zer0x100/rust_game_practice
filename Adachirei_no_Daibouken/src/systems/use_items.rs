@@ -5,10 +5,12 @@ use crate::prelude::*;
 #[read_component(ProvidesHealing)]
 #[read_component(ProvidesWiderView)]
 #[read_component(ProvidesSurroundingAttack)]
+#[read_component(ProvidesLinerAttack)]
 #[read_component(Point)]
+#[read_component(Direction)]
 #[write_component(Health)]
 #[write_component(FieldOfVeiw)]
-pub fn use_items(ecs: &mut SubWorld, commands: &mut CommandBuffer) {
+pub fn use_items(ecs: &mut SubWorld, commands: &mut CommandBuffer, #[resource] map: &Map) {
     let mut healing_to_apply = Vec::<(Entity, i32)>::new();
     let mut wider_view_to_apply = Vec::<(Entity, i32)>::new();
 
@@ -36,6 +38,28 @@ pub fn use_items(ecs: &mut SubWorld, commands: &mut CommandBuffer) {
 
                             //Shock Wave Animation
                             send_shock_effects(user_pos, commands);
+                        }
+                    }
+                }
+                if let Ok(attack) = item.get_component::<ProvidesLinerAttack>() {
+                    if let Ok(user) = ecs.entry_ref(activate.used_by) {
+                        if let Ok(user_pos) = user.get_component::<Point>() {
+                            if let Ok(user_direction) = user.get_component::<Direction>() {
+                                positions.iter(ecs)
+                                    .filter(|(_, pos)| {
+                                        let mut target_pos = *user_pos + user_direction.unit_vector();
+                                        let mut count = 1;
+                                        while map.can_enter_tile(target_pos) && count <= 8{
+                                            if **pos == target_pos { return true; }
+                                            target_pos += user_direction.unit_vector();
+                                            count += 1;
+                                        }
+                                        return false;
+                                    })
+                                    .for_each(|(victim, _)| { healing_to_apply.push((*victim, -attack.amount))});
+
+                                send_rocket_punch_effect(user_pos, user_direction, map, commands);
+                            }
                         }
                     }
                 }
@@ -79,5 +103,33 @@ fn send_shock_effects(pos: &Point, commands: &mut CommandBuffer) {
                 })
             );
         }
+    }
+}
+
+fn send_rocket_punch_effect(pos: &Point, direction: &Direction, map: &Map, commands: &mut CommandBuffer) {
+    let fist_glyph = match *direction {
+        Direction::Left => 27,
+        Direction::Right => 26,
+        Direction::Up => 24,
+        Direction::Down => 25,
+    };
+
+    let mut target_pos = *pos + direction.unit_vector();
+    let mut offset = 0;
+    while map.can_enter_tile(target_pos) && offset < 7 {
+        let mut frames = smallvec![0; 8];
+        frames[offset] = fist_glyph;
+        commands.push(
+            ((), EffectMotion {
+                position: target_pos,
+                console: 4,
+                anime_frames: frames,
+                current_frame: 0,
+                elasped_time_from_last_frame: 0.0,
+            })
+        );
+
+        offset += 1;
+        target_pos += direction.unit_vector();
     }
 }

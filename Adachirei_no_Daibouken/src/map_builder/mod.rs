@@ -1,17 +1,13 @@
 mod automata;
 mod drunkard;
 mod empty;
-mod prefab;
 mod rooms;
 mod themes;
 
 use crate::prelude::*;
 const NUM_MONSTERS: usize = 70;
 
-use self::{
-    prefab::apply_prefab,
-    themes::{ResearchInstitueTheme, ForestTheme, StockRoomTheme},
-};
+use themes::{ResearchInstitueTheme, ForestTheme, StockRoomTheme};
 use automata::CellularAutomataArchitect;
 use drunkard::DrunkardArchitect;
 use rooms::RoomsArchitect;
@@ -35,7 +31,6 @@ pub struct MapBuilder {
 impl MapBuilder {
     pub fn with_architect_and_theme(rng: &mut RandomNumberGenerator, mut architect: Box<dyn MapArchitect>, theme: Box<dyn MapTheme>) -> Self {
         let mut mb = architect.new(rng);
-        apply_prefab(&mut mb, rng);
         mb.theme = theme;
 
         mb
@@ -108,7 +103,7 @@ impl MapBuilder {
         )
     }
 
-    fn spawn_monsters(&self, player_start: &Point, rng: &mut RandomNumberGenerator) -> Vec<Point> {
+    fn spawn_monsters(&self, player_start: &Point, prohibited_pos: &[Point], rng: &mut RandomNumberGenerator) -> Vec<Point> {
 
         let dijkstra_map = DijkstraMap::new(
             SCREEN_WIDTH,
@@ -132,6 +127,7 @@ impl MapBuilder {
         let mut spawns = Vec::new();
         use std::collections::HashSet;
         let mut already_exist_idx = HashSet::new();
+        prohibited_pos.iter().for_each(|pos| { already_exist_idx.insert(map_idx(pos.x, pos.y)); });
         while spawns.len() < NUM_MONSTERS {
             let target_idx = rng.random_slice_index(&spawnable_tiles).unwrap();
             if !already_exist_idx.contains(&target_idx) {

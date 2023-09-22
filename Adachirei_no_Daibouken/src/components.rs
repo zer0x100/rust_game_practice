@@ -9,6 +9,17 @@ pub enum Direction {
     Down,
 }
 
+impl Direction {
+    pub fn unit_vector(&self) -> Point {
+        match *self {
+            Direction::Left => Point::new(-1, 0),
+            Direction::Right => Point::new(1, 0),
+            Direction::Up => Point::new(0, -1),
+            Direction::Down => Point::new(0, 1)
+        }
+    }
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct Render {
     pub color: ColorPair,
@@ -98,6 +109,11 @@ pub struct ProvidesWiderView {
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct ProvidesSurroundingAttack {
+    pub amount: i32,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ProvidesLinerAttack {
     pub amount: i32,
 }
 

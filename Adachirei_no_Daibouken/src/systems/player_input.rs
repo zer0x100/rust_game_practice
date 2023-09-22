@@ -46,12 +46,7 @@ pub fn player_input(
                 Point::zero()
             },
             VirtualKeyCode::A => {
-                match player_direction {
-                    Direction::Left => Point::new(-1, 0),
-                    Direction::Right => Point::new(1, 0),
-                    Direction::Up => Point::new(0, -1),
-                    Direction::Down => Point::new(0, 1),
-                }
+                player_direction.unit_vector()
             }
             VirtualKeyCode::P => {
                 //picking up items doesn't skip player's turn.

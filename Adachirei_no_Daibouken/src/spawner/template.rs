@@ -126,6 +126,7 @@ impl Templates {
                     "Healing" => commands.add_component(entity, ProvidesHealing { amount: *n }),
                     "MagicEye" => commands.add_component(entity, ProvidesWiderView { amount: *n }),
                     "ShockWave" => commands.add_component(entity, ProvidesSurroundingAttack{ amount: *n}),
+                    "RocketPunch" => commands.add_component(entity, ProvidesLinerAttack{ amount: *n }),
                     _ => {
                         println!("Warning: we don't know how to provide {}", provides);
                     }

@@ -36,6 +36,7 @@ pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer, #[resource] turn
                             commands.push(
                                 ((), EffectMotion{
                                     position: *attacker_pos,
+                                    console: 2,
                                     anime_frames,
                                     current_frame: 0,
                                     elasped_time_from_last_frame: 0.0,

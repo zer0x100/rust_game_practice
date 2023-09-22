@@ -127,6 +127,7 @@ pub struct AttackFrames {
 #[derive(Clone, Debug, PartialEq)]
 pub struct EffectMotion {
     pub position: Point,
+    pub console: usize,
     pub anime_frames: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
     pub current_frame: usize,
     pub elasped_time_from_last_frame: f32,

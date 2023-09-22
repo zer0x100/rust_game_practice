@@ -11,7 +11,6 @@ pub fn effect_anime(
         commands: &mut CommandBuffer,
 ) {
     let mut draw_batch = DrawBatch::new();
-    draw_batch.target(2);
 
     let offset = Point::new(camera.left_x, camera.top_y);
     let mut no_effects = true;
@@ -20,6 +19,7 @@ pub fn effect_anime(
         .for_each(|(message_entity, effect_motion)| {
             no_effects= false;
 
+            draw_batch.target(effect_motion.console);
             draw_batch.set(
                 effect_motion.position - offset,
                 ColorPair::new(WHITE, BLACK),

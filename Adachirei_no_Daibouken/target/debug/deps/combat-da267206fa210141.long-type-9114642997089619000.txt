@@ -1,0 +1,1 @@
+Filter<Flatten<ChunkIter<'_, '_, (legion::Entity, legion::Read<bracket_lib::prelude::Point>), legion::internals::query::filter::EntityFilterTuple<And<(legion::query::Any, ComponentFilter<bracket_lib::prelude::Point>, ComponentFilter<components::Health>)>, And<(Passthrough, Passthrough)>>>>, [closure@src\systems\use_items.rs:49:45: 49:55]>

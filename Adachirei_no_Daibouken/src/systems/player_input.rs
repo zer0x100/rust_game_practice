@@ -8,7 +8,7 @@ use crate::prelude::*;
 #[read_component(Item)]
 #[read_component(Weapon)]
 #[read_component(Armor)]
-#[read_component(Render)]
+#[read_component(Direction)]
 pub fn player_input(
     ecs: &SubWorld,
     commands: &mut CommandBuffer,
@@ -16,49 +16,37 @@ pub fn player_input(
     #[resource] turn_state: &mut TurnState,
 ) {
     if let Some(key) = *key {
-        let mut players = <(Entity, &Point, &Player, &Render)>::query();
+        let mut players = <(Entity, &Point, &Direction)>::query().filter(component::<Player>());
         let mut new_turn = TurnState::PlayerTurn;
 
-        let (player_entity, player_pos, mut player_component, mut player_render) = players
+        let (player_entity, player_pos, player_direction) = players
         .iter(ecs)
-        .find_map(|(entity, pos, player, render)| Some((*entity, *pos, *player, render.clone())))
+        .find_map(|(entity, pos, direction)| Some((*entity, *pos, *direction)))
         .unwrap();
         let delta = match key {
             //Turning does not skip player input turn.
             VirtualKeyCode::Left => {
                 new_turn = TurnState::AwaitingInput;
-                player_component.direction = Direction::Left;
-                player_render.direction = Direction::Left;
-                commands.add_component(player_entity, player_component);
-                commands.add_component(player_entity, player_render);
+                commands.add_component(player_entity, Direction::Left);
                 Point::zero()
             },
             VirtualKeyCode::Right => {
                 new_turn = TurnState::AwaitingInput;
-                player_component.direction = Direction::Right;
-                player_render.direction = Direction::Right;
-                commands.add_component(player_entity, player_component);
-                commands.add_component(player_entity, player_render);
+                commands.add_component(player_entity, Direction::Right);
                 Point::zero()
             },
             VirtualKeyCode::Up => {
                 new_turn = TurnState::AwaitingInput;
-                player_component.direction = Direction::Up;
-                player_render.direction = Direction::Up;
-                commands.add_component(player_entity, player_component);
-                commands.add_component(player_entity, player_render);
+                commands.add_component(player_entity, Direction::Up);
                 Point::zero()
             },
             VirtualKeyCode::Down => {
                 new_turn = TurnState::AwaitingInput;
-                player_component.direction = Direction::Down;
-                player_render.direction = Direction::Down;
-                commands.add_component(player_entity, player_component);
-                commands.add_component(player_entity, player_render);
+                commands.add_component(player_entity, Direction::Down);
                 Point::zero()
             },
             VirtualKeyCode::A => {
-                match player_component.direction {
+                match player_direction {
                     Direction::Left => Point::new(-1, 0),
                     Direction::Right => Point::new(1, 0),
                     Direction::Up => Point::new(0, -1),

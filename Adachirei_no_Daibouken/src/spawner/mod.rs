@@ -13,8 +13,8 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
             Name("Adachi Rei".to_string()),
             Player {
                 map_level: 0,
-                direction: Direction::Down,
             },
+            Direction::Down,
             pos,
             Render {
                 color: ColorPair::new(WHITE, BLACK),
@@ -22,7 +22,6 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
                 right_frames: smallvec![64, 64, 64, 16, 16, 16],
                 up_frames: smallvec![64, 64, 64, 30, 30, 30],
                 down_frames: smallvec![64, 64, 64, 31, 31, 31],
-                direction: Direction::Down,
                 current_frame: 0,
                 elasped_time_from_last_frame: 0.0,
             },
@@ -36,7 +35,6 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
                 is_dirty: true,
             },
             Damage(1),
-            Defense(0),
         )
     );
 
@@ -48,6 +46,7 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
         up: smallvec![1, 2, 3, 4, 5, 6],
         down: smallvec![1, 2, 3, 4, 5, 6],
     });
+    cb.add_component(entity, Defense(0));
     cb.flush(ecs);
 }
 

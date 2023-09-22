@@ -93,10 +93,10 @@ impl Templates {
                 right_frames: SmallVec::from_vec(template.right_frames.clone()),
                 up_frames: SmallVec::from_vec(template.up_frames.clone()),
                 down_frames: SmallVec::from_vec(template.down_frames.clone()),
-                direction: Direction::Down,
                 current_frame: 0,
                 elasped_time_from_last_frame: 0.0,
             },
+            Direction::Down,
             Name(template.name.clone()),
         ));
         match template.entity_type {

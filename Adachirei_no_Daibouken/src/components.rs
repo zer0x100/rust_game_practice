@@ -1,6 +1,14 @@
 pub use crate::prelude::*;
 use std::collections::HashSet;
 
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum Direction {
+    Left,
+    Right,
+    Up,
+    Down,
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct Render {
     pub color: ColorPair,
@@ -8,7 +16,6 @@ pub struct Render {
     pub right_frames: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
     pub up_frames: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
     pub down_frames: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
-    pub direction: Direction,
     pub current_frame: usize,
     pub elasped_time_from_last_frame: f32,
 }
@@ -16,7 +23,6 @@ pub struct Render {
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Player {
     pub map_level: u32,
-    pub direction: Direction,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]

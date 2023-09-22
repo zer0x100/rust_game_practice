@@ -3,6 +3,7 @@ use crate::prelude::*;
 #[system]
 #[read_component(Point)]
 #[write_component(Render)]
+#[read_component(Direction)]
 #[read_component(FieldOfVeiw)]
 #[read_component(Player)]
 pub fn entity_render(ecs: &mut SubWorld, #[resource] camera: &Camera, #[resource] elasped_time: &f32) {
@@ -14,17 +15,17 @@ pub fn entity_render(ecs: &mut SubWorld, #[resource] camera: &Camera, #[resource
         .find_map(|fov| Some(fov.clone()))
         .unwrap();
 
-    <(&Point, &mut Render)>::query()
+    <(&Point, &mut Render, &Direction)>::query()
         .iter_mut(ecs)
-        .filter(|(pos, _)| player_fov.visible_tiles.contains(pos))
-        .for_each(|(pos, render)| {
+        .filter(|(pos, _, _)| player_fov.visible_tiles.contains(pos))
+        .for_each(|(pos, render, direction)| {
             render.elasped_time_from_last_frame += elasped_time;
             if render.elasped_time_from_last_frame > ANIME_FRAME_DURATION {
                 render.elasped_time_from_last_frame = 0.0;
                 render.current_frame += 1;
             }
 
-            let glyph = match render.direction {
+            let glyph = match direction {
                 Direction::Left => {
                     render.current_frame %= render.left_frames.len();
                     render.left_frames[render.current_frame]

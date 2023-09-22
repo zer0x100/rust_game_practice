@@ -8,7 +8,7 @@ use crate::prelude::*;
 #[read_component(Defense)]
 #[read_component(Point)]
 #[read_component(AttackFrames)]
-pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer, #[resource] turn: &mut TurnState) {
+pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer) {
     let mut attackers = <(Entity, &WantsToAttack)>::query();
 
     let victims: Vec<(Entity, Entity, Entity)> = attackers // (1)
@@ -16,8 +16,7 @@ pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer, #[resource] turn
         .map(|(entity, attack)| (*entity, attack.attacker, attack.victim)) // (2)
         .collect(); // (3)
 
-    //If an attacker has AttackMotion, send EffectMotion Message and TurnBeforeEffects.then, chage TurnState to EffectAnime
-    let mut no_attack_motion = true;
+    //If an attacker has AttackMotion, send EffectMotion Message
     victims.iter().for_each(|(message, attacker, victim)| {
         //EffectMotion Message
         if let Ok(attacker) = ecs.entry_ref(*attacker) {
@@ -42,8 +41,6 @@ pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer, #[resource] turn
                                     elasped_time_from_last_frame: 0.0,
                                 })
                             );
-                            //check if we change turn to EffetAnime
-                            no_attack_motion = false;
                         }
                     }
                 }
@@ -93,9 +90,4 @@ pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer, #[resource] turn
         }
         commands.remove(*message);
     });
-    
-    if !no_attack_motion {
-        commands.push(((), TurnBeforeEffects(*turn)));
-        *turn = TurnState::EffectAnime;
-    }
 }

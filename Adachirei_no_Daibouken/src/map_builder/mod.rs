@@ -6,7 +6,7 @@ mod rooms;
 mod themes;
 
 use crate::prelude::*;
-const NUM_MONSTERS: usize = 50;
+const NUM_MONSTERS: usize = 70;
 
 use self::{
     prefab::apply_prefab,

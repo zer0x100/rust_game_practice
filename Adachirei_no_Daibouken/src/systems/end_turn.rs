@@ -6,7 +6,8 @@ use crate::prelude::*;
 #[read_component(Point)]
 #[read_component(Carried)]
 #[read_component(Boss)]
-pub fn end_turn(ecs: &SubWorld, #[resource] turn_state: &mut TurnState, #[resource] map: &Map) {
+#[read_component(EffectMotion)]
+pub fn end_turn(ecs: &SubWorld, #[resource] turn_state: &mut TurnState, #[resource] map: &Map, commands: &mut CommandBuffer) {
     let mut players = <(&Health, &Point)>::query().filter(component::<Player>());
 
     let boss_health_default = 1;
@@ -23,6 +24,13 @@ pub fn end_turn(ecs: &SubWorld, #[resource] turn_state: &mut TurnState, #[resour
         TurnState::MonsterTurn => TurnState::AwaitingInput,
         _ => currnet_state,
     };
+
+    //check effects animation message
+    //if effectmotion message exists, change turn and send TurnBeforeEffects
+    if <&EffectMotion>::query().iter(ecs).count() > 0 {
+        commands.push(((), TurnBeforeEffects(currnet_state)));
+        new_state = TurnState::EffectAnime;
+    }
 
     //check game over and victory, next-level
     players.iter(ecs).for_each(|(health, pos)| {

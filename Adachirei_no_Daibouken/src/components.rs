@@ -97,6 +97,11 @@ pub struct ProvidesWiderView {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ProvidesSurroundingAttack {
+    pub amount: i32,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Carried(pub Entity);
 
 #[derive(Clone, Copy, Debug, PartialEq)]

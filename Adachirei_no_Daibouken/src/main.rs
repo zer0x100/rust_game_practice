@@ -261,6 +261,8 @@ impl GameState for State {
         ctx.cls();
         ctx.set_active_console(3);
         ctx.cls();
+        ctx.set_active_console(4);
+        ctx.cls();
 
         //take input and elasped time from last tick
         self.resources.insert(ctx.frame_time_ms);
@@ -310,6 +312,7 @@ fn main() -> BError {
         .with_simple_console_no_bg(SCREEN_WIDTH, SCREEN_HEIGHT, "dungeonfont.png")
         .with_simple_console_no_bg(DISPLAY_WIDTH, DISPLAY_HEIGHT, "dungeonfont.png")
         .with_simple_console_no_bg(DISPLAY_WIDTH * 3, DISPLAY_HEIGHT * 3, "terminal8x8.png")
+        .with_simple_console_no_bg(DISPLAY_WIDTH, DISPLAY_HEIGHT, "dungeonfont.png")
         .build()?;
 
     main_loop(context, State::new())

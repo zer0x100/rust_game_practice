@@ -125,6 +125,7 @@ impl Templates {
                 .for_each(|(provides, n)| match provides.as_str() {
                     "Healing" => commands.add_component(entity, ProvidesHealing { amount: *n }),
                     "MagicEye" => commands.add_component(entity, ProvidesWiderView { amount: *n }),
+                    "ShockWave" => commands.add_component(entity, ProvidesSurroundingAttack{ amount: *n}),
                     _ => {
                         println!("Warning: we don't know how to provide {}", provides);
                     }

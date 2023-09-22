@@ -8,6 +8,8 @@ use crate::prelude::*;
 #[read_component(Defense)]
 #[read_component(Point)]
 #[read_component(AttackFrames)]
+#[read_component(DamageFrames)]
+#[read_component(Direction)]
 pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer) {
     let mut attackers = <(Entity, &WantsToAttack)>::query();
 
@@ -19,11 +21,11 @@ pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer) {
     //If an attacker has AttackMotion, send EffectMotion Message
     victims.iter().for_each(|(message, attacker, victim)| {
         //EffectMotion Message
-        if let Ok(attacker) = ecs.entry_ref(*attacker) {
-            if let Ok(attack_motion) = attacker.get_component::<AttackFrames>() {
+        if let Ok(attacker) = ecs.entry_ref(*attacker){
+            if let Ok(victim) = ecs.entry_ref(*victim) {
                 if let Ok(attacker_pos) = attacker.get_component::<Point>() {
-                    if let Ok(victim) = ecs.entry_ref(*victim) {
-                        if let Ok(victim_pos) = victim.get_component::<Point>() {
+                    if let Ok(victim_pos) = victim.get_component::<Point>() {
+                        if let Ok(attack_motion) = attacker.get_component::<AttackFrames>() {
                             let direction = *victim_pos - *attacker_pos;
                             let anime_frames = match (direction.x, direction.y) {
                                 (-1, 0) => attack_motion.left.clone(),
@@ -42,10 +44,31 @@ pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer) {
                                 })
                             );
                         }
+                        if let Ok(damage_motion) = victim.get_component::<DamageFrames>() {
+                            if let Ok(direction) = victim.get_component::<Direction>() {
+                                let anime_frames = match direction {
+                                    Direction::Left => damage_motion.left.clone(),
+                                    Direction::Right => damage_motion.right.clone(),
+                                    Direction::Up => damage_motion.up.clone(),
+                                    Direction::Down => damage_motion.down.clone(),
+                                };
+
+                                commands.push(
+                                    ((), EffectMotion{
+                                        position: *victim_pos,
+                                        console: 2,
+                                        anime_frames,
+                                        current_frame: 0,
+                                        elasped_time_from_last_frame: 0.0,
+                                    })
+                                );
+                            }
+                        }
                     }
                 }
             }
-        }
+        } 
+
 
         //calculate the damage
         let base_damage = if let Ok(v) = ecs.entry_ref(*attacker) {

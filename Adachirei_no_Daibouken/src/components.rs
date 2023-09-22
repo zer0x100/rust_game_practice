@@ -152,6 +152,14 @@ pub struct AttackFrames {
 }
 
 #[derive(Clone, Debug, PartialEq)]
+pub struct DamageFrames {
+    pub left: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
+    pub right: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
+    pub up: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
+    pub down: SmallVec<[FontCharType; MAX_NUM_FRAMES]>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
 pub struct EffectMotion {
     pub position: Point,
     pub console: usize,

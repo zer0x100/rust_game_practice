@@ -22,6 +22,10 @@ pub struct Template {
     pub special_tag: Option<SpecialTag>,
     pub field_of_view_radius: Option<i32>,
     pub heat_seeking: bool,
+    pub damage_left_frames: Option<Vec<FontCharType>>,
+    pub damage_right_frames: Option<Vec<FontCharType>>,
+    pub damage_up_frames: Option<Vec<FontCharType>>,
+    pub damage_down_frames: Option<Vec<FontCharType>>,
     pub attack_left_frames: Option<Vec<FontCharType>>,
     pub attack_right_frames: Option<Vec<FontCharType>>,
     pub attack_up_frames: Option<Vec<FontCharType>>,
@@ -156,6 +160,20 @@ impl Templates {
                             right: SmallVec::from_vec(attack_right_frames.clone()),
                             up: SmallVec::from_vec(attack_up_frames.clone()),
                             down: SmallVec::from_vec(attack_down_frames.clone()),
+                        });
+                    }
+                }
+            }
+        }
+        if let Some(damage_left_frames) = &template.damage_left_frames{
+            if let Some(damage_right_frames) = &template.damage_right_frames {
+                if let Some(damage_up_frames) = &template.damage_up_frames {
+                    if let Some(damage_down_frames) = &template.damage_down_frames {
+                        commands.add_component(entity, DamageFrames {
+                            left: SmallVec::from_vec(damage_left_frames.clone()),
+                            right: SmallVec::from_vec(damage_right_frames.clone()),
+                            up: SmallVec::from_vec(damage_up_frames.clone()),
+                            down: SmallVec::from_vec(damage_down_frames.clone()),
                         });
                     }
                 }

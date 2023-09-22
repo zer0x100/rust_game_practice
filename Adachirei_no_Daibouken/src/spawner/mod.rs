@@ -34,7 +34,6 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
                 radius: 4,
                 is_dirty: true,
             },
-            Damage(1),
         )
     );
 
@@ -46,6 +45,13 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
         up: smallvec![1, 2, 3, 4, 5, 6],
         down: smallvec![1, 2, 3, 4, 5, 6],
     });
+    cb.add_component(entity, DamageFrames{
+        left: smallvec![19, 19, 173, 173, 19, 19],
+        right: smallvec![19, 19, 173, 173, 19, 19],
+        up: smallvec![19, 19, 173, 173, 19, 19],
+        down: smallvec![19, 19, 173, 173, 19, 19],
+    });
+    cb.add_component(entity, Damage(1));
     cb.add_component(entity, Defense(0));
     cb.flush(ecs);
 }

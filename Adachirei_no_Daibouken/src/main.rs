@@ -300,6 +300,17 @@ impl GameState for State {
 fn main() -> BError {
     std::env::set_var("RUST_BACKTRACE", "1");
 
+    //starting sound
+    use std::fs::File;
+    use std::io::BufReader;
+    use rodio::{Decoder, OutputStream, Sink};
+    let (_stream, stream_handle) = OutputStream::try_default().unwrap();
+    let file = BufReader::new(File::open("resources/pc_calculation.wav").unwrap());
+    let source = Decoder::new(file).unwrap();
+    let sink = Sink::try_new(&stream_handle).unwrap();
+    sink.append(source);
+    sink.sleep_until_end();
+
     let context = BTermBuilder::new()
         .with_title("Dungeon Crawler")
         .with_fps_cap(30.0)

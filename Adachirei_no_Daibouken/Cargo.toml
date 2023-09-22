@@ -11,3 +11,4 @@ bracket-lib = "~0.8.1"
 legion = "=0.3.1"
 serde = { version = "=1.0.115" }
 ron = "=0.6.1"
+rodio = "0.17.1"

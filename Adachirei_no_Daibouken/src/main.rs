@@ -15,8 +15,8 @@ mod prelude {
     pub use legion::*;
     pub const SCREEN_WIDTH: i32 = 80;
     pub const SCREEN_HEIGHT: i32 = 50;
-    pub const DISPLAY_WIDTH: i32 = SCREEN_WIDTH / 3;
-    pub const DISPLAY_HEIGHT: i32 = SCREEN_HEIGHT / 3;
+    pub const DISPLAY_WIDTH: i32 = SCREEN_WIDTH * 3 / 10;
+    pub const DISPLAY_HEIGHT: i32 = SCREEN_HEIGHT * 3 / 10;
     pub const ANIME_FRAME_DURATION: f32 = 75.0;
     pub const MAX_NUM_FRAMES: usize = 10;
     pub use crate::camera::*;
@@ -315,7 +315,7 @@ fn main() -> BError {
         .with_title("Dungeon Crawler")
         .with_fps_cap(30.0)
         .with_dimensions(DISPLAY_WIDTH, DISPLAY_HEIGHT)
-        .with_tile_dimensions(60, 60)
+        .with_tile_dimensions(64, 64)
         .with_resource_path("resources/")
         .with_font("dungeonfont.png", 32, 32)
         .with_font("terminal8x8.png", 8, 8)

@@ -1,8 +1,0 @@
-C:\Users\zer0x100\Desktop\Dev_test\game\rust_game_practice\Adachirei_no_Daibouken\target\debug\deps\bracket_algorithm_traits-216d8d6dee101c60.rmeta: C:\Users\zer0x100\.cargo\registry\src\github.com-1ecc6299db9ec823\bracket-algorithm-traits-0.8.7\src\lib.rs C:\Users\zer0x100\.cargo\registry\src\github.com-1ecc6299db9ec823\bracket-algorithm-traits-0.8.7\src\algorithm2d.rs C:\Users\zer0x100\.cargo\registry\src\github.com-1ecc6299db9ec823\bracket-algorithm-traits-0.8.7\src\algorithm3d.rs C:\Users\zer0x100\.cargo\registry\src\github.com-1ecc6299db9ec823\bracket-algorithm-traits-0.8.7\src\basemap.rs
-
-C:\Users\zer0x100\Desktop\Dev_test\game\rust_game_practice\Adachirei_no_Daibouken\target\debug\deps\bracket_algorithm_traits-216d8d6dee101c60.d: C:\Users\zer0x100\.cargo\registry\src\github.com-1ecc6299db9ec823\bracket-algorithm-traits-0.8.7\src\lib.rs C:\Users\zer0x100\.cargo\registry\src\github.com-1ecc6299db9ec823\bracket-algorithm-traits-0.8.7\src\algorithm2d.rs C:\Users\zer0x100\.cargo\registry\src\github.com-1ecc6299db9ec823\bracket-algorithm-traits-0.8.7\src\algorithm3d.rs C:\Users\zer0x100\.cargo\registry\src\github.com-1ecc6299db9ec823\bracket-algorithm-traits-0.8.7\src\basemap.rs
-
-C:\Users\zer0x100\.cargo\registry\src\github.com-1ecc6299db9ec823\bracket-algorithm-traits-0.8.7\src\lib.rs:
-C:\Users\zer0x100\.cargo\registry\src\github.com-1ecc6299db9ec823\bracket-algorithm-traits-0.8.7\src\algorithm2d.rs:
-C:\Users\zer0x100\.cargo\registry\src\github.com-1ecc6299db9ec823\bracket-algorithm-traits-0.8.7\src\algorithm3d.rs:
-C:\Users\zer0x100\.cargo\registry\src\github.com-1ecc6299db9ec823\bracket-algorithm-traits-0.8.7\src\basemap.rs:

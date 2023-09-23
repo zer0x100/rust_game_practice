@@ -21,29 +21,31 @@ pub fn use_items(ecs: &mut SubWorld, commands: &mut CommandBuffer, #[resource] m
         .for_each(|(entity, activate)| {
             let item = ecs.entry_ref(activate.item);
             if let Ok(item) = item {
-                if let Ok(healing) = item.get_component::<ProvidesHealing>() {
-                    healing_to_apply.push((activate.used_by, healing.amount));
-                }
-                if let Ok(wider_view) = item.get_component::<ProvidesWiderView>() {
-                    wider_view_to_apply.push((activate.used_by, wider_view.amount));
-                }
-                if let Ok(attack) = item.get_component::<ProvidesSurroundingAttack>() {
-                    if let Ok(user) = ecs.entry_ref(activate.used_by) {
-                        if let Ok(user_pos) = user.get_component::<Point>() {
+                if let Ok(user) = ecs.entry_ref(activate.used_by) {
+                    if let Ok(user_pos) = user.get_component::<Point>() {
+                        if let Ok(healing) = item.get_component::<ProvidesHealing>() {
+                            healing_to_apply.push((activate.used_by, healing.amount));
+
+                            //Heal Animation
+                            send_heal_effect(user_pos, commands);
+                        }
+                        if let Ok(wider_view) = item.get_component::<ProvidesWiderView>() {
+                            wider_view_to_apply.push((activate.used_by, wider_view.amount));
+
+                            //Light Animation
+                            send_light_effect(user_pos, commands);
+                        }
+                        if let Ok(attack) = item.get_component::<ProvidesSurroundingAttack>() {
                             positions.iter(ecs)
                                 .filter(|(victim, pos)| DistanceAlg::Pythagoras
                                     .distance2d(*user_pos, **pos) < 1.7 && **victim != activate.used_by
                                 )
                                 .for_each(|(victim, _)| healing_to_apply.push((*victim, -attack.amount)));
-
+        
                             //Shock Wave Animation
                             send_shock_effects(user_pos, commands);
                         }
-                    }
-                }
-                if let Ok(attack) = item.get_component::<ProvidesLinerAttack>() {
-                    if let Ok(user) = ecs.entry_ref(activate.used_by) {
-                        if let Ok(user_pos) = user.get_component::<Point>() {
+                        if let Ok(attack) = item.get_component::<ProvidesLinerAttack>() {
                             if let Ok(user_direction) = user.get_component::<Direction>() {
                                 positions.iter(ecs)
                                     .filter(|(_, pos)| {
@@ -57,7 +59,8 @@ pub fn use_items(ecs: &mut SubWorld, commands: &mut CommandBuffer, #[resource] m
                                         return false;
                                     })
                                     .for_each(|(victim, _)| { healing_to_apply.push((*victim, -attack.amount))});
-
+                                
+                                //Rocket Punch Animation
                                 send_rocket_punch_effect(user_pos, user_direction, map, commands);
                             }
                         }
@@ -88,6 +91,30 @@ pub fn use_items(ecs: &mut SubWorld, commands: &mut CommandBuffer, #[resource] m
             }
         }
     }
+}
+
+fn send_heal_effect(pos: &Point, commands: &mut CommandBuffer) {
+    commands.push(
+        ((), EffectMotion {
+            position: *pos,
+            console: 4,
+            anime_frames: smallvec![208, 208, 209, 209, 210, 210],
+            current_frame: 0,
+            elasped_time_from_last_frame: 0.0,
+        })
+    );
+}
+
+fn send_light_effect(pos: &Point, commands: &mut CommandBuffer) {
+    commands.push(
+        ((), EffectMotion {
+            position: *pos,
+            console: 4,
+            anime_frames: smallvec![4, 4, 76, 76, 4, 4],
+            current_frame: 0,
+            elasped_time_from_last_frame: 0.0,
+        })
+    );
 }
 
 fn send_shock_effects(pos: &Point, commands: &mut CommandBuffer) {

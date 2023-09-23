@@ -1,7 +1,0 @@
-C:\Users\zer0x100\Desktop\Dev_test\game\rust_game_practice\Adachirei_no_Daibouken\target\debug\deps\symphonia-14d043b0b59785ec.rmeta: C:\Users\zer0x100\.cargo\registry\src\github.com-1ecc6299db9ec823\symphonia-0.5.3\src\lib.rs
-
-C:\Users\zer0x100\Desktop\Dev_test\game\rust_game_practice\Adachirei_no_Daibouken\target\debug\deps\libsymphonia-14d043b0b59785ec.rlib: C:\Users\zer0x100\.cargo\registry\src\github.com-1ecc6299db9ec823\symphonia-0.5.3\src\lib.rs
-
-C:\Users\zer0x100\Desktop\Dev_test\game\rust_game_practice\Adachirei_no_Daibouken\target\debug\deps\symphonia-14d043b0b59785ec.d: C:\Users\zer0x100\.cargo\registry\src\github.com-1ecc6299db9ec823\symphonia-0.5.3\src\lib.rs
-
-C:\Users\zer0x100\.cargo\registry\src\github.com-1ecc6299db9ec823\symphonia-0.5.3\src\lib.rs:

@@ -78,9 +78,9 @@ impl State {
         ctx.print_color_centered(3, ORANGE, BLACK, "Humanoid Character Interface 3 Prototype 0,");
         ctx.print_color_centered(4, ORANGE, BLACK, "codenamed Adachi Rei is starting up...");
         ctx.print_centered(6, "She woke up receiving an emergency signal during a maintenance.");
-        ctx.print_centered(8, "It seems that a large number of robots are attacking the laboratory,");
-        ctx.print_centered(10, "and the doctor is about to be taken away by a giant robot.");
-        ctx.print_centered(12, "'War Robot Prototype' was written on his shoulder.");
+        ctx.print_centered(8, "It seems that a large number of humanoids are attacking the laboratory,");
+        ctx.print_centered(10, "and the doctor is about to be taken away by a girl type humanoid.");
+        ctx.print_centered(12, "It only doesn't wear a helmet.");
         ctx.print_centered(14, "Let's hurry and go to rescue him");
 
         ctx.print_color_centered(25, YELLOW, BLACK, "Display an illust");
@@ -115,7 +115,7 @@ impl State {
     fn gameover(&mut self, ctx: &mut BTerm) {
         ctx.set_active_console(3);
         ctx.print_color_centered(2, RED, BLACK, "Your quest has ended.");
-        ctx.print_centered(4, "Slain by a robot");
+        ctx.print_centered(4, "Slain by a evil humanoid");
         ctx.print_centered(8, "The doctor was taken away, and her battery was broken.");
         ctx.print_centered(12, "After a while, her consciousness completely ceased.");
 
@@ -134,7 +134,7 @@ impl State {
         ctx.set_active_console(3);
         ctx.print_color_centered(2, BLUE, BLACK, "You have won!");
         ctx.print_centered(8, "After a fierce battle,");
-        ctx.print_centered(12, "she defeated the giant robot and rescued the doctor.");
+        ctx.print_centered(12, "she defeated the humanoid and rescued the doctor.");
 
         ctx.print_color_centered(20, YELLOW, BLACK, "Display an illust");
 

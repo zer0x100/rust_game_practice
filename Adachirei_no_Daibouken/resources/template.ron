@@ -86,7 +86,7 @@ Templates(
         ),
         Template(
             entity_type: Item,
-            name : "Sturdy Firefighting Clothing", levels: [ 1, 2 ],
+            name : "Sturdy Hoodie", levels: [ 1, 2 ],
             left_frames: [ 60 ], right_frames: [ 60 ],
             up_frames: [ 60 ], down_frames: [ 60 ],
             frequency: 1,
@@ -240,7 +240,7 @@ Templates(
         //Speciall armor
         Template(
             entity_type: Item, levels : [ ],
-            name : "Reinforced Fibers Firefighting Clothing",
+            name : "Reinforced Fibers Hoodie",
             left_frames: [ 37 ],
             right_frames: [ 37 ],
             up_frames: [ 37 ],

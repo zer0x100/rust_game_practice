@@ -70,13 +70,13 @@ pub fn spawn_level(
 //ランダム発生以外の、固有敵・武器などSpecialTagが付けられたものを発生させる。
 pub fn spawn_special_tagged(ecs: &mut World, pos: Point, tag: template::SpecialTag) {
     let templates = Templates::load();
-    let boss_template = templates
+    let special_template = templates
         .entities
         .iter()
         .filter(|template| template.special_tag == Some(tag.clone()))
         .nth(0)
-        .expect("Templates::load Error, No Boss exists");
+        .expect("Templates::load Error, No special template exists");
     let mut commands = CommandBuffer::new(ecs);
-    templates.spawn_entity(&pos, boss_template, &mut commands);
+    templates.spawn_entity(&pos, special_template, &mut commands);
     commands.flush(ecs);
 }

@@ -227,9 +227,11 @@ impl State {
 
         //add other entities
         let unique_item_start = map_builder.monster_spawns[0];
+        let unique_item_start_2 = map_builder.monster_spawns[1];
         if map_level == 2 {
             spawn_special_tagged(&mut self.ecs, map_builder.amulet_start, SpecialTag::Boss);
             spawn_special_tagged(&mut self.ecs, unique_item_start, SpecialTag::UniqueWeapon);
+            spawn_special_tagged(&mut self.ecs, unique_item_start_2, SpecialTag::UniqueBullet);
         } else {
             let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
             map_builder.map.tiles[exit_idx] = TileType::Exit;
@@ -240,7 +242,7 @@ impl State {
             &mut self.ecs,
             &mut rng,
             map_level as usize,
-            &map_builder.monster_spawns[1..],
+            &map_builder.monster_spawns[2..],
         );
 
         //add resources

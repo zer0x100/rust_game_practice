@@ -41,25 +41,16 @@ Templates(
         ),
         Template(
             entity_type: Item,
-            name: "Rocket Punch Fist", levels : [ 1 ],
+            name: "Rocket Punch Fist", levels : [ 1, 2 ],
             left_frames: [ 11 ], right_frames: [ 11 ],
             up_frames: [ 11 ], down_frames: [ 11 ],
-            provides: Some([ ("RocketPunch", 5) ]),
-            frequency: 1,
-            heat_seeking: false,
-        ),
-        Template(
-            entity_type: Item,
-            name: "Lightning Rocket Punch Fist", levels : [ 2 ],
-            left_frames: [ 12 ], right_frames: [ 12 ],
-            up_frames: [ 12 ], down_frames: [ 12 ],
             provides: Some([ ("RocketPunch", 8) ]),
             frequency: 1,
             heat_seeking: false,
         ),
         Template(
             entity_type: Item,
-            name: "Sturdy Arm", levels : [ 0 ],
+            name: "Mossy Arm", levels : [ 0 ],
             left_frames: [ 47 ], right_frames: [ 47 ],
             up_frames: [ 47 ], down_frames: [ 47 ],
             frequency : 1,
@@ -68,7 +59,7 @@ Templates(
         ),
         Template(
             entity_type: Item,
-            name : "Combat Arm", levels: [ 1 ],
+            name : "Sturdy Arm", levels: [ 1 ],
             left_frames: [ 83 ], right_frames: [ 83 ],
             up_frames: [ 83 ], down_frames: [ 83 ],
             frequency: 1,
@@ -97,7 +88,7 @@ Templates(
         //Enemies
         Template(
             entity_type: Enemy,
-            name : "Transport Robot", levels : [ 0 ],
+            name : "Transport Humanoid", levels : [ 0 ],
             left_frames: [ 103, 103, 103, 102, 102, 102 ],
             right_frames: [ 103, 103, 103, 102, 102, 102 ],
             up_frames: [ 103, 103, 103, 102, 102, 102 ],
@@ -119,7 +110,7 @@ Templates(
         ),
         Template(
             entity_type: Enemy,
-            name : "Combat Robot A", levels : [ 0, 1 ],
+            name : "Combat Humanoid A", levels : [ 0, 1 ],
             left_frames: [ 111, 111, 111, 110, 110, 110 ],
             right_frames: [ 111, 111, 111, 110, 110, 110 ],
             up_frames: [ 111, 111, 111, 110, 110, 110 ],
@@ -141,7 +132,7 @@ Templates(
         ),
         Template(
             entity_type: Enemy,
-            name : "Combat Robot B", levels : [ 1, 2 ],
+            name : "Combat Humanoid B", levels : [ 1, 2 ],
             left_frames: [ 79, 79, 79, 80, 80, 80 ],
             right_frames: [ 79, 79, 79, 80, 80, 80 ],
             up_frames: [ 79, 79, 79, 80, 80, 80 ],
@@ -163,7 +154,7 @@ Templates(
         ),
         Template(
             entity_type: Enemy,
-            name : "Combat Robot C", levels : [ 2 ],
+            name : "Combat Humanoid C", levels : [ 2 ],
             left_frames: [ 69, 69, 69, 70, 70, 70],
             right_frames: [ 69, 69, 69, 70, 70, 70],
             up_frames: [ 69, 69, 69, 70, 70, 70],
@@ -190,7 +181,7 @@ Templates(
         //Boss enemy
         Template(
             entity_type: Enemy,
-            name : "War Robot Prototype", levels : [ ],
+            name : "Humanoid Combat Intelligence Prototype 0", levels : [ ],
             left_frames: [ 124, 124, 124, 125, 125, 125 ],
             right_frames: [ 124, 124, 124, 125, 125, 125 ],
             up_frames: [ 124, 124, 124, 125, 125, 125 ],
@@ -225,18 +216,6 @@ Templates(
             heat_seeking: false,
         ),
         //Speciall weapon
-        Template(
-            entity_type: Item, levels : [ ],
-            name : "Jet Engine Arm",
-            left_frames: [ 94 ],
-            right_frames: [ 94 ],
-            up_frames: [ 94 ],
-            down_frames: [ 94 ],
-            frequency: 0,
-            base_damage: Some(7),
-            special_tag: Some(UniqueWeapon),
-            heat_seeking: false,
-        ),
         //Speciall armor
         Template(
             entity_type: Item, levels : [ ],
@@ -248,6 +227,28 @@ Templates(
             frequency: 0,
             base_defense: Some(3),
             special_tag: Some(UniqueArmor),
+            heat_seeking: false,
+        ),
+        Template(
+            entity_type: Item,
+            name: "incandescence Rocket Punch Fist", levels : [  ],
+            left_frames: [ 12 ], right_frames: [ 12 ],
+            up_frames: [ 12 ], down_frames: [ 12 ],
+            frequency: 0,
+            provides: Some([ ("RocketPunch", 16) ]),
+            special_tag: Some(UniqueBullet),
+            heat_seeking: false,
+        ),
+        Template(
+            entity_type: Item, levels : [ ],
+            name : "Jet Engine Arm",
+            left_frames: [ 94 ],
+            right_frames: [ 94 ],
+            up_frames: [ 94 ],
+            down_frames: [ 94 ],
+            frequency: 0,
+            base_damage: Some(7),
+            special_tag: Some(UniqueWeapon),
             heat_seeking: false,
         ),
     ],

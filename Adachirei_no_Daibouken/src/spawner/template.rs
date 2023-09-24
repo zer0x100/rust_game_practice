@@ -45,6 +45,7 @@ pub enum SpecialTag {
     UniqueWeapon,
     UniqueArmor,
     UniqueEye,
+    UniqueBullet,
 }
 
 #[derive(Clone, Deserialize, Debug)]

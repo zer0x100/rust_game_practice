@@ -314,18 +314,18 @@ fn main() -> BError {
     sink.sleep_until_end();
 
     let context = BTermBuilder::new()
-        .with_title("Dungeon Crawler")
+        .with_title("AdachiRei_no_Daibouken")
         .with_fps_cap(30.0)
         .with_dimensions(DISPLAY_WIDTH, DISPLAY_HEIGHT)
         .with_tile_dimensions(64, 64)
         .with_resource_path("resources/")
-        .with_font("dungeonfont.png", 32, 32)
+        .with_font("adachi_materials.png", 32, 32)
         .with_font("terminal8x8.png", 8, 8)
-        .with_simple_console(DISPLAY_WIDTH, DISPLAY_HEIGHT, "dungeonfont.png")
-        .with_simple_console_no_bg(SCREEN_WIDTH, SCREEN_HEIGHT, "dungeonfont.png")
-        .with_simple_console_no_bg(DISPLAY_WIDTH, DISPLAY_HEIGHT, "dungeonfont.png")
+        .with_simple_console(DISPLAY_WIDTH, DISPLAY_HEIGHT, "adachi_materials.png")
+        .with_simple_console_no_bg(SCREEN_WIDTH, SCREEN_HEIGHT, "adachi_materials.png")
+        .with_simple_console_no_bg(DISPLAY_WIDTH, DISPLAY_HEIGHT, "adachi_materials.png")
         .with_simple_console_no_bg(DISPLAY_WIDTH * 3, DISPLAY_HEIGHT * 3, "terminal8x8.png")
-        .with_simple_console_no_bg(DISPLAY_WIDTH, DISPLAY_HEIGHT, "dungeonfont.png")
+        .with_simple_console_no_bg(DISPLAY_WIDTH, DISPLAY_HEIGHT, "adachi_materials.png")
         .build()?;
 
     main_loop(context, State::new())

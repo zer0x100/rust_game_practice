@@ -5,9 +5,9 @@ pub struct ResearchInstitueTheme {}
 impl MapTheme for ResearchInstitueTheme {
     fn tile_to_render(&self, tile_type: TileType) -> FontCharType {
         match tile_type {
-            TileType::Floor => to_cp437('.'),
-            TileType::Wall => to_cp437('#'),
-            TileType::Exit => to_cp437('>'),
+            TileType::Floor => 9,
+            TileType::Wall => 10,
+            TileType::Exit => 15,
         }
     }
 }
@@ -23,9 +23,9 @@ pub struct ForestTheme {}
 impl MapTheme for ForestTheme {
     fn tile_to_render(&self, tile_type: TileType) -> FontCharType {
         match tile_type {
-            TileType::Floor => to_cp437(';'),
-            TileType::Wall => to_cp437('"'),
-            TileType::Exit => to_cp437('>'),
+            TileType::Floor => 2,
+            TileType::Wall => 1,
+            TileType::Exit => 16,
         }
     }
 }
@@ -41,9 +41,9 @@ pub struct StockRoomTheme {}
 impl MapTheme for StockRoomTheme {
     fn tile_to_render(&self, tile_type: TileType) -> FontCharType {
         match tile_type {
-            TileType::Floor => 176,
-            TileType::Wall => 178,
-            TileType::Exit => to_cp437('>'),
+            TileType::Floor => 11,
+            TileType::Wall => 12,
+            TileType::Exit => 4,
         }
     }
 }

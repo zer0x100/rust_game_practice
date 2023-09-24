@@ -302,23 +302,13 @@ impl GameState for State {
 fn main() -> BError {
     std::env::set_var("RUST_BACKTRACE", "1");
 
-    //starting sound
-    use std::fs::File;
-    use std::io::BufReader;
-    use rodio::{Decoder, OutputStream, Sink};
-    let (_stream, stream_handle) = OutputStream::try_default().unwrap();
-    let file = BufReader::new(File::open("resources/pc_calculation.wav").unwrap());
-    let source = Decoder::new(file).unwrap();
-    let sink = Sink::try_new(&stream_handle).unwrap();
-    sink.append(source);
-    sink.sleep_until_end();
-
     let context = BTermBuilder::new()
         .with_title("AdachiRei_no_Daibouken")
         .with_fps_cap(30.0)
         .with_dimensions(DISPLAY_WIDTH, DISPLAY_HEIGHT)
         .with_tile_dimensions(64, 64)
         .with_resource_path("resources/")
+        .with_font("adachi_materials.png", 32, 32)
         .with_font("adachi_materials.png", 32, 32)
         .with_font("terminal8x8.png", 8, 8)
         .with_simple_console(DISPLAY_WIDTH, DISPLAY_HEIGHT, "adachi_materials.png")

@@ -98,7 +98,7 @@ fn send_heal_effect(pos: &Point, commands: &mut CommandBuffer) {
         ((), EffectMotion {
             position: *pos,
             console: 4,
-            anime_frames: smallvec![208, 208, 209, 209, 210, 210],
+            anime_frames: smallvec![106, 106, 107, 107, 108, 108],
             current_frame: 0,
             elasped_time_from_last_frame: 0.0,
         })
@@ -110,7 +110,7 @@ fn send_light_effect(pos: &Point, commands: &mut CommandBuffer) {
         ((), EffectMotion {
             position: *pos,
             console: 4,
-            anime_frames: smallvec![4, 4, 76, 76, 4, 4],
+            anime_frames: smallvec![105, 104, 103, 105, 104, 103],
             current_frame: 0,
             elasped_time_from_last_frame: 0.0,
         })
@@ -135,10 +135,10 @@ fn send_shock_effects(pos: &Point, commands: &mut CommandBuffer) {
 
 fn send_rocket_punch_effect(pos: &Point, direction: &Direction, map: &Map, commands: &mut CommandBuffer) {
     let fist_glyph = match *direction {
-        Direction::Left => 27,
-        Direction::Right => 26,
-        Direction::Up => 24,
-        Direction::Down => 25,
+        Direction::Left => 63,
+        Direction::Right => 79,
+        Direction::Up => 31,
+        Direction::Down => 47,
     };
 
     let mut target_pos = *pos + direction.unit_vector();

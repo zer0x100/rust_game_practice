@@ -18,10 +18,10 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
             pos,
             Render {
                 color: ColorPair::new(WHITE, BLACK),
-                left_frames: smallvec![64, 64, 64, 17, 17, 17],
-                right_frames: smallvec![64, 64, 64, 16, 16, 16],
-                up_frames: smallvec![64, 64, 64, 30, 30, 30],
-                down_frames: smallvec![64, 64, 64, 31, 31, 31],
+                left_frames: smallvec![20, 20, 21, 21, 22, 22, 21, 21],
+                right_frames: smallvec![23, 23, 24, 24, 25, 25, 24, 24],
+                up_frames: smallvec![26, 26, 27, 27, 28, 28, 27, 27],
+                down_frames: smallvec![17, 17, 18, 18, 19, 19, 18, 18],
                 current_frame: 0,
                 elasped_time_from_last_frame: 0.0,
             },
@@ -40,16 +40,16 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
     //can't push more than 9 components at once?
     let mut cb = CommandBuffer::new(&ecs);
     cb.add_component(entity, AttackFrames{
-        left: smallvec![48, 49, 50, 51, 52, 53],
-        right: smallvec![48, 49, 50, 51, 52, 53],
-        up: smallvec![1, 2, 3, 4, 5, 6],
-        down: smallvec![1, 2, 3, 4, 5, 6],
+        left: smallvec![20, 21, 22, 21, 20, 21],
+        right: smallvec![23, 24,25, 24, 23, 24],
+        up: smallvec![26, 27, 28, 27, 26, 27],
+        down: smallvec![17, 18, 19, 18, 17, 18],
     });
     cb.add_component(entity, DamageFrames{
-        left: smallvec![19, 19, 173, 173, 19, 19],
-        right: smallvec![19, 19, 173, 173, 19, 19],
-        up: smallvec![19, 19, 173, 173, 19, 19],
-        down: smallvec![19, 19, 173, 173, 19, 19],
+        left: smallvec![20, 21, 22, 21, 20, 21],
+        right: smallvec![23, 24,25, 24, 23, 24],
+        up: smallvec![26, 27, 28, 27, 26, 27],
+        down: smallvec![17, 18, 19, 18, 17, 18],
     });
     cb.add_component(entity, Damage(1));
     cb.add_component(entity, Defense(0));

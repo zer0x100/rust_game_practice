@@ -124,7 +124,7 @@ fn send_shock_effects(pos: &Point, commands: &mut CommandBuffer) {
                 ((), EffectMotion {
                     position: *pos + Point::new(ix, iy),
                     console: 4,
-                    anime_frames: smallvec![129, 130, 131, 132, 133, 134],
+                    anime_frames: smallvec![113, 114, 115, 116, 117, 118],
                     current_frame: 0,
                     elasped_time_from_last_frame: 0.0,
                 })
